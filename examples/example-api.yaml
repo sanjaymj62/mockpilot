@@ -1,0 +1,95 @@
+openapi: 3.0.0
+info:
+  title: Example API - Template Literal Style Demo
+  version: 1.0.0
+  description: |
+    This example demonstrates how MockPilot generates HTTP files with:
+    - Global variables for base URLs
+    - Reusable path parameters
+    - Query parameter handling
+    - Smart parameter extraction
+
+servers:
+  - url: https://api.example.com
+    description: Production API
+
+paths:
+  /persons/{personId}:
+    get:
+      summary: Get Person by ID
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: include
+          in: query
+          schema:
+            type: string
+            example: profile
+      responses:
+        '200':
+          description: Person details
+
+    put:
+      summary: Update Person
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: John Doe
+                email:
+                  type: string
+                  format: email
+      responses:
+        '200':
+          description: Person updated
+
+  /persons/{personId}/orders:
+    get:
+      summary: Get Person Orders
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+            example: completed
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            example: 10
+      responses:
+        '200':
+          description: List of orders
+
+components:
+  schemas:
+    Person:
+      type: object
+      required:
+        - name
+        - email
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email

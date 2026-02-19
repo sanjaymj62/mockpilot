@@ -209,7 +209,8 @@ export default function Home() {
     setHttpOutput('');
 
     try {
-      const response = await fetch('/api/generate', {
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+      const response = await fetch(`${backendUrl}/api/generate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,0 +1,49 @@
+### Variables
+@baseUrl = http://localhost:3000
+@userId = 123
+@domain = example-value
+@companyId = 123
+@preferenceName = example-name
+
+### Invoke an analytics Run
+@reportCode = example-value
+POST {{baseUrl}}/invoke/{{reportCode}}
+
+
+### Get last recorded login of an user
+GET {{baseUrl}}/data-record/last-login/{{userId}}
+
+
+### Returns company invoice download tracking by invoiceId and VKO
+GET {{baseUrl}}/data-record/{{companyId}}/invoice-tracking?invoiceId=123&vko=example-value
+
+
+### Creates a company invoice download tracking
+POST {{baseUrl}}/data-record/{{companyId}}/invoice-tracking
+Content-Type: application/json
+
+{
+  "companyId": "tego utpote rec",
+  "gpId": "thymum succurro molestiae aggero ",
+  "userId": "candidus truci",
+  "invoiceId": "cultura cado cupiditate speciosus text",
+  "vko": "u",
+  "statusText": "versus sulum autem alo averto",
+  "downloadTimestamp": "2024-01-27T14:43:10.671Z"
+}
+
+### Get user report preference by domain
+GET {{baseUrl}}/api/report/user/{{userId}}/preferences/{{domain}}
+
+
+### Create or update user report preference by domain
+POST {{baseUrl}}/api/report/user/{{userId}}/preferences/{{domain}}/{{preferenceName}}
+Content-Type: application/json
+
+{
+  "frequency": "DAILY"
+}
+
+### Find report frequency for preference
+GET {{baseUrl}}/api/report/user/{{userId}}/preferences/{{domain}}/{{preferenceName}}
+

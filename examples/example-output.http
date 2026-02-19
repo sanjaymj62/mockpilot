@@ -1,0 +1,20 @@
+### Variables
+@baseUrl = https://api.example.com
+@personId = 123
+
+### Get Person by ID
+GET {{baseUrl}}/persons/{{personId}}?include=profile
+
+
+### Update Person
+PUT {{baseUrl}}/persons/{{personId}}
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "Trevor_Langworth48@gmail.com"
+}
+
+### Get Person Orders
+GET {{baseUrl}}/persons/{{personId}}/orders?status=completed&limit=10
+

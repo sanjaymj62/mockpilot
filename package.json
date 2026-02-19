@@ -1,26 +1,20 @@
 {
-  "name": "mockpilot",
+  "name": "mockpilot-monorepo",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
-  },
-  "dependencies": {
-    "next": "16.0.7",
-    "react": "19.2.0",
-    "react-dom": "19.2.0"
+    "dev": "pnpm --parallel --filter \"@mockpilot/web\" --filter \"@mockpilot/backend\" dev",
+    "dev:web": "pnpm --filter \"@mockpilot/web\" dev",
+    "dev:backend": "pnpm --filter \"@mockpilot/backend\" dev",
+    "build": "pnpm --filter \"@mockpilot/core\" build && pnpm --filter \"@mockpilot/backend\" build && pnpm --filter \"@mockpilot/web\" build && pnpm --filter \"@mockpilot/cli\" build",
+    "build:core": "pnpm --filter \"@mockpilot/core\" build",
+    "build:backend": "pnpm --filter \"@mockpilot/backend\" build",
+    "build:web": "pnpm --filter \"@mockpilot/web\" build",
+    "build:cli": "pnpm --filter \"@mockpilot/cli\" build",
+    "start:backend": "pnpm --filter \"@mockpilot/backend\" start",
+    "start:web": "pnpm --filter \"@mockpilot/web\" start"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.0.7",
-    "tailwindcss": "^4",
     "typescript": "^5"
   }
 }
