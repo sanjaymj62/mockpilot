@@ -1,0 +1,155 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: supabase/postgres:15.6.1.147
+    container_name: supabase-staging-db
+    environment:
+      POSTGRES_PASSWORD: ${STAGING_POSTGRES_PASSWORD}
+      POSTGRES_DB: ${STAGING_POSTGRES_DB}
+      POSTGRES_USER: postgres
+    volumes:
+      - staging-db-data:/var/lib/postgresql/data
+      - ./init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-U', 'postgres']
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  kong:
+    image: kong:3.4
+    container_name: supabase-staging-kong
+    environment:
+      KONG_DATABASE: 'off'
+      KONG_DECLARATIVE_CONFIG: /var/lib/kong/kong.yml
+      KONG_DNS_ORDER: LAST,A,CNAME
+      KONG_PLUGINS: request-transformer,cors,key-auth,acl
+      KONG_NGINX_PROXY_PROXY_BUFFER_SIZE: 160k
+      KONG_NGINX_PROXY_PROXY_BUFFERS: 64 160k
+    volumes:
+      - ./kong.yml:/var/lib/kong/kong.yml:ro
+    ports:
+      - '8000:8000'
+      - '8443:8443'
+    depends_on:
+      - auth
+      - storage
+    restart: unless-stopped
+
+  auth:
+    image: supabase/gotrue:v2.151.0
+    container_name: supabase-staging-auth
+    environment:
+      GOTRUE_API_HOST: 0.0.0.0
+      GOTRUE_API_PORT: 9999
+      API_EXTERNAL_URL: ${STAGING_API_EXTERNAL_URL}
+      GOTRUE_DB_DRIVER: postgres
+      GOTRUE_DB_DATABASE_URL: postgres://postgres:${STAGING_POSTGRES_PASSWORD}@postgres:5432/${STAGING_POSTGRES_DB}?search_path=auth
+      GOTRUE_SITE_URL: ${STAGING_SITE_URL}
+      GOTRUE_URI_ALLOW_LIST: ${STAGING_ALLOWED_ORIGINS}
+      GOTRUE_DISABLE_SIGNUP: 'false'
+      GOTRUE_JWT_ADMIN_ROLES: service_role
+      GOTRUE_JWT_AUD: authenticated
+      GOTRUE_JWT_DEFAULT_GROUP_NAME: authenticated
+      GOTRUE_JWT_EXP: 3600
+      GOTRUE_JWT_SECRET: ${STAGING_JWT_SECRET}
+      GOTRUE_EXTERNAL_EMAIL_ENABLED: 'true'
+      GOTRUE_MAILER_AUTOCONFIRM: 'true'
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD', 'wget', '--no-verbose', '--tries=1', '--spider', 'http://localhost:9999/health']
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  storage:
+    image: supabase/storage-api:v1.11.0
+    container_name: supabase-staging-storage
+    environment:
+      ANON_KEY: ${STAGING_ANON_KEY}
+      SERVICE_KEY: ${STAGING_SERVICE_ROLE_KEY}
+      POSTGREST_URL: httprest:3000
+      PGRST_JWT_SECRET: ${STAGING_JWT_SECRET}
+      DATABASE_URL: postgres://postgres:${STAGING_POSTGRES_PASSWORD}@postgres:5432/${STAGING_POSTGRES_DB}
+      FILE_SIZE_LIMIT: 52428800
+      STORAGE_BACKEND: file
+      FILE_STORAGE_BACKEND_PATH: /var/lib/storage
+      TENANT_ID: stub
+      REGION: stub
+      GLOBAL_S3_BUCKET: stub
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - staging-storage-data:/var/lib/storage
+    healthcheck:
+      test: ['CMD', 'wget', '--no-verbose', '--tries=1', '--spider', 'http://localhost:5000/status']
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  rest:
+    image: postgrest/postgrest:v12.0.2
+    container_name: supabase-staging-rest
+    environment:
+      PGRST_DB_URI: postgres://postgres:${STAGING_POSTGRES_PASSWORD}@postgres:5432/${STAGING_POSTGRES_DB}
+      PGRST_DB_SCHEMAS: public,storage,graphql_public
+      PGRST_DB_ANON_ROLE: anon
+      PGRST_JWT_SECRET: ${STAGING_JWT_SECRET}
+      PGRST_DB_USE_LEGACY_GUCS: 'false'
+      PGRST_APP_SETTINGS_JWT_SECRET: ${STAGING_JWT_SECRET}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD', 'wget', '--no-verbose', '--tries=1', '--spider', 'http://localhost:3000/']
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: .
+      dockerfile: apps/backend/Dockerfile
+    container_name: mockpilot-staging-backend
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      DATABASE_URL: postgres://postgres:${STAGING_POSTGRES_PASSWORD}@postgres:5432/${STAGING_POSTGRES_DB}
+      SUPABASE_URL: http://kong:8000
+      SUPABASE_KEY: ${STAGING_ANON_KEY}
+      SUPABASE_SERVICE_KEY: ${STAGING_SERVICE_ROLE_KEY}
+    depends_on:
+      - kong
+      - postgres
+    ports:
+      - '3001:3001'
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    container_name: mockpilot-staging-web
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_BACKEND_URL: http://backend:3001
+      NEXT_PUBLIC_SUPABASE_URL: http://kong:8000
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${STAGING_ANON_KEY}
+    depends_on:
+      - backend
+      - kong
+    ports:
+      - '3000:3000'
+    restart: unless-stopped
+
+volumes:
+  staging-db-data:
+  staging-storage-data:
+
+networks:
+  default:
+    name: supabase-staging-network

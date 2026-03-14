@@ -1,0 +1,164 @@
+openapi: 3.0.0
+info:
+  title: Complex Types API
+  version: 1.0.0
+  description: API with complex types - arrays, nested objects, enums
+
+servers:
+  - url: https://api.complex.com/v1
+
+paths:
+  /users:
+    get:
+      summary: List users with filters
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+            example: 20
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [active, inactive, pending]
+        - name: tags
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: User list
+
+    post:
+      summary: Create user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: User created
+
+  /users/{userId}:
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+
+    get:
+      summary: Get user by ID
+      responses:
+        '200':
+          description: User details
+
+    patch:
+      summary: Partial update user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+      responses:
+        '200':
+          description: User updated
+
+    delete:
+      summary: Delete user
+      responses:
+        '204':
+          description: User deleted
+
+  /users/{userId}/avatar:
+    post:
+      summary: Upload avatar
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Avatar uploaded
+
+  /webhooks:
+    post:
+      summary: Register webhook
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                event:
+                  type: string
+      responses:
+        '201':
+          description: Webhook registered
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        age:
+          type: integer
+          minimum: 0
+          maximum: 150
+        roles:
+          type: array
+          items:
+            type: string
+            enum: [admin, user, guest]
+        address:
+          $ref: '#/components/schemas/Address'
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+
+    Address:
+      type: object
+      properties:
+        street:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+        postalCode:
+          type: string

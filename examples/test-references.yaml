@@ -1,0 +1,180 @@
+openapi: 3.0.0
+info:
+  title: References & Composition API
+  version: 1.0.0
+  description: API demonstrating $ref, allOf, oneOf, anyOf
+
+servers:
+  - url: https://api.refs.com
+
+paths:
+  /products:
+    get:
+      summary: List products
+      responses:
+        '200':
+          description: Product list
+
+    post:
+      summary: Create product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '201':
+          description: Product created
+
+  /products/{productId}:
+    parameters:
+      - name: productId
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get product
+      responses:
+        '200':
+          description: Product details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+
+  /orders:
+    post:
+      summary: Create order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+      responses:
+        '201':
+          description: Order created
+
+  /orders/{orderId}/cancel:
+    post:
+      summary: Cancel order
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: reason
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Order cancelled
+
+components:
+  schemas:
+    Product:
+      allOf:
+        - $ref: '#/components/schemas/BaseProduct'
+        - type: object
+          properties:
+            price:
+              type: number
+              minimum: 0
+
+    BaseProduct:
+      type: object
+      required:
+        - name
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+
+    Order:
+      type: object
+      required:
+        - items
+        - customer
+      properties:
+        id:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+        customer:
+          $ref: '#/components/schemas/Customer'
+        status:
+          type: string
+          enum: [pending, confirmed, shipped, delivered]
+
+    OrderItem:
+      type: object
+      properties:
+        productId:
+          type: string
+        quantity:
+          type: integer
+          minimum: 1
+
+    Customer:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+
+    PaymentMethod:
+      oneOf:
+        - $ref: '#/components/schemas/CreditCard'
+        - $ref: '#/components/schemas/PayPal'
+        - $ref: '#/components/schemas/BankAccount'
+
+    CreditCard:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [credit_card]
+        cardNumber:
+          type: string
+        expiry:
+          type: string
+
+    PayPal:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [paypal]
+        email:
+          type: string
+
+    BankAccount:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [bank_account]
+        accountNumber:
+          type: string
+        routingNumber:
+          type: string
+
+    SearchResult:
+      anyOf:
+        - $ref: '#/components/schemas/Product'
+        - $ref: '#/components/schemas/Customer'
+        - $ref: '#/components/schemas/Order'

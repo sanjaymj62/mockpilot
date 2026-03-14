@@ -1,390 +1,468 @@
 'use client';
 
-import { useState, useRef, ChangeEvent } from 'react';
-import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { atomOneDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
-import http from 'react-syntax-highlighter/dist/esm/languages/hljs/http';
-import { GenerateResponse } from '@/types/schema';
-
-SyntaxHighlighter.registerLanguage('http', http);
-
-const EXAMPLE_YAML = `openapi: 3.0.0
-info:
-  title: Sample API
-  version: 1.0.0
-servers:
-  - url: https://api.example.com
-paths:
-  /users:
-    post:
-      summary: Create a new user
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-      responses:
-        '201':
-          description: User created
-  /users/{id}:
-    put:
-      summary: Update a user
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-      responses:
-        '200':
-          description: User updated
-components:
-  schemas:
-    User:
-      type: object
-      required:
-        - email
-        - firstName
-      properties:
-        firstName:
-          type: string
-          example: John
-        lastName:
-          type: string
-        email:
-          type: string
-          format: email
-        age:
-          type: integer
-          minimum: 0
-          maximum: 120
-        isActive:
-          type: boolean`;
+import Link from 'next/link';
 
 const styles = {
   container: {
     minHeight: '100vh',
-    display: 'flex',
-    flexDirection: 'column' as const,
-    background: '#111827',
+    background: '#0a0a0a',
     color: '#f3f4f6',
   },
   header: {
-    background: '#1f2937',
-    borderBottom: '1px solid #374151',
-    padding: '1rem 1.5rem',
+    borderBottom: '1px solid #1f2937',
+    background: '#111',
   },
-  title: {
+  nav: {
+    maxWidth: '1200px',
+    margin: '0 auto',
+    padding: '1.5rem 2rem',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  logo: {
     fontSize: '1.5rem',
     fontWeight: 'bold' as const,
-    margin: 0,
+    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
   },
-  subtitle: {
+  navLinks: {
+    display: 'flex',
+    gap: '2rem',
+    alignItems: 'center',
+  },
+  navLink: {
     color: '#9ca3af',
-    fontSize: '0.875rem',
-    margin: '0.25rem 0 0 0',
+    textDecoration: 'none',
+    transition: 'color 0.2s',
   },
-  main: {
-    flex: 1,
-    display: 'flex',
-    overflow: 'hidden',
+  hero: {
+    maxWidth: '1200px',
+    margin: '0 auto',
+    padding: '8rem 2rem',
+    textAlign: 'center' as const,
   },
-  panel: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column' as const,
+  heroTitle: {
+    fontSize: '4rem',
+    fontWeight: 'bold' as const,
+    marginBottom: '1.5rem',
+    lineHeight: '1.2',
   },
-  panelHeader: {
-    background: '#1f2937',
-    borderBottom: '1px solid #374151',
-    padding: '0.75rem 1rem',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+  gradient: {
+    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
   },
-  panelTitle: {
-    fontWeight: '600' as const,
-    margin: 0,
+  heroSubtitle: {
+    fontSize: '1.5rem',
+    color: '#9ca3af',
+    marginBottom: '3rem',
+    lineHeight: '1.6',
   },
-  buttonGroup: {
-    display: 'flex',
-    gap: '0.5rem',
-  },
-  button: {
-    padding: '0.25rem 0.75rem',
-    fontSize: '0.875rem',
-    background: '#374151',
-    color: '#f3f4f6',
-    border: 'none',
-    borderRadius: '0.375rem',
-    cursor: 'pointer',
-    transition: 'background-color 0.2s',
-  },
-  buttonPrimary: {
-    background: '#2563eb',
-  },
-  textarea: {
-    flex: 1,
-    padding: '1rem',
-    background: '#111827',
-    color: '#f3f4f6',
-    border: 'none',
-    outline: 'none',
-    resize: 'none' as const,
-    fontFamily: 'monospace',
-    fontSize: '0.875rem',
-  },
-  outputContainer: {
-    flex: 1,
-    overflow: 'auto',
-    background: '#111827',
-  },
-  placeholder: {
-    padding: '1rem',
-    color: '#6b7280',
-    fontFamily: 'monospace',
-    fontSize: '0.875rem',
-  },
-  footer: {
-    background: '#1f2937',
-    borderTop: '1px solid #374151',
-    padding: '1rem 1.5rem',
-  },
-  footerContent: {
-    display: 'flex',
-    flexDirection: 'column' as const,
-    alignItems: 'center',
-    gap: '0.75rem',
-  },
-  generateButton: {
-    padding: '0.75rem 2rem',
-    background: '#2563eb',
+  ctaButton: {
+    padding: '1rem 3rem',
+    fontSize: '1.25rem',
+    fontWeight: 'bold' as const,
+    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
     color: 'white',
     border: 'none',
-    borderRadius: '0.5rem',
-    fontWeight: '600' as const,
+    borderRadius: '0.75rem',
     cursor: 'pointer',
-    transition: 'background-color 0.2s',
+    transition: 'transform 0.2s, box-shadow 0.2s',
+    boxShadow: '0 10px 40px rgba(102, 126, 234, 0.3)',
+    textDecoration: 'none',
+    display: 'inline-block',
+  },
+  features: {
+    maxWidth: '1200px',
+    margin: '0 auto',
+    padding: '6rem 2rem',
+  },
+  sectionTitle: {
+    fontSize: '2.5rem',
+    fontWeight: 'bold' as const,
+    textAlign: 'center' as const,
+    marginBottom: '4rem',
+  },
+  featureGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    gap: '2rem',
+  },
+  featureCard: {
+    padding: '2rem',
+    background: '#111',
+    border: '1px solid #1f2937',
+    borderRadius: '1rem',
+    transition: 'transform 0.2s, border-color 0.2s',
+  },
+  featureIcon: {
+    fontSize: '2.5rem',
+    marginBottom: '1rem',
+  },
+  featureTitle: {
+    fontSize: '1.25rem',
+    fontWeight: 'bold' as const,
+    marginBottom: '0.75rem',
+  },
+  featureDesc: {
+    color: '#9ca3af',
+    lineHeight: '1.6',
+  },
+  pricing: {
+    maxWidth: '1200px',
+    margin: '0 auto',
+    padding: '6rem 2rem',
+    background: '#0a0a0a',
+  },
+  pricingGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    gap: '2rem',
+  },
+  pricingCard: {
+    padding: '2.5rem',
+    background: '#111',
+    border: '1px solid #1f2937',
+    borderRadius: '1rem',
+    position: 'relative' as const,
+  },
+  pricingCardPopular: {
+    border: '2px solid #667eea',
+    transform: 'scale(1.05)',
+  },
+  popularBadge: {
+    position: 'absolute' as const,
+    top: '-12px',
+    right: '20px',
+    padding: '0.25rem 1rem',
+    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    borderRadius: '1rem',
+    fontSize: '0.75rem',
+    fontWeight: 'bold' as const,
+  },
+  pricingTier: {
     fontSize: '1rem',
+    color: '#9ca3af',
+    marginBottom: '0.5rem',
   },
-  error: {
+  pricingPrice: {
+    fontSize: '3rem',
+    fontWeight: 'bold' as const,
+    marginBottom: '0.5rem',
+  },
+  pricingPeriod: {
+    color: '#9ca3af',
+    marginBottom: '2rem',
+  },
+  pricingFeatures: {
+    listStyle: 'none',
+    padding: 0,
+    marginBottom: '2rem',
+  },
+  pricingFeature: {
+    padding: '0.75rem 0',
+    color: '#d1d5db',
+    borderBottom: '1px solid #1f2937',
+  },
+  pricingButton: {
     width: '100%',
-    maxWidth: '48rem',
-    padding: '0.75rem',
-    background: 'rgba(127, 29, 29, 0.5)',
-    border: '1px solid #b91c1c',
-    borderRadius: '0.375rem',
-    color: '#fecaca',
-    fontSize: '0.875rem',
+    padding: '1rem',
+    fontSize: '1rem',
+    fontWeight: 'bold' as const,
+    background: '#1f2937',
+    color: 'white',
+    border: '1px solid #374151',
+    borderRadius: '0.5rem',
+    cursor: 'pointer',
+    transition: 'background 0.2s',
+    textDecoration: 'none',
+    display: 'block',
+    textAlign: 'center' as const,
   },
-  hiddenInput: {
-    display: 'none',
+  pricingButtonPrimary: {
+    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    border: 'none',
+  },
+  footer: {
+    borderTop: '1px solid #1f2937',
+    padding: '3rem 2rem',
+    textAlign: 'center' as const,
+    color: '#6b7280',
   },
 };
 
-export default function Home() {
-  const [yamlInput, setYamlInput] = useState('');
-  const [httpOutput, setHttpOutput] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const handleFileUpload = async (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    try {
-      const text = await file.text();
-      setYamlInput(text);
-      setError('');
-    } catch (err) {
-      setError('Failed to read file');
-    }
-  };
-
-  const generateHttpRequests = async () => {
-    setLoading(true);
-    setError('');
-    setHttpOutput('');
-
-    try {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
-      const response = await fetch(`${backendUrl}/api/generate`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ yaml: yamlInput }),
-      });
-
-      const data: GenerateResponse = await response.json();
-
-      if (!response.ok || data.error) {
-        throw new Error(data.error || 'Failed to generate HTTP requests');
-      }
-
-      setHttpOutput(data.httpFile);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const downloadHttpFile = () => {
-    const blob = new Blob([httpOutput], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'requests.http';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
-
-  const copyToClipboard = async () => {
-    try {
-      await navigator.clipboard.writeText(httpOutput);
-      alert('Copied to clipboard!');
-    } catch (err) {
-      alert('Failed to copy to clipboard');
-    }
-  };
-
-  const loadExample = () => {
-    setYamlInput(EXAMPLE_YAML);
-    setError('');
-  };
-
+export default function LandingPage() {
   return (
     <div style={styles.container}>
+      {/* Header */}
       <header style={styles.header}>
-        <h1 style={styles.title}>MockPilot</h1>
-        <p style={styles.subtitle}>OpenAPI/Swagger to HTTP File Generator</p>
+        <nav style={styles.nav}>
+          <div style={styles.logo}>MockPilot</div>
+          <div style={styles.navLinks}>
+            <a 
+              href="#features" 
+              style={styles.navLink}
+              onMouseEnter={(e) => (e.currentTarget.style.color = '#f3f4f6')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = '#9ca3af')}
+            >
+              Features
+            </a>
+            <a 
+              href="#pricing" 
+              style={styles.navLink}
+              onMouseEnter={(e) => (e.currentTarget.style.color = '#f3f4f6')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = '#9ca3af')}
+            >
+              Pricing
+            </a>
+            <Link 
+              href="/auth/login"
+              style={styles.navLink}
+              onMouseEnter={(e) => (e.currentTarget.style.color = '#f3f4f6')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = '#9ca3af')}
+            >
+              Login
+            </Link>
+            <Link 
+              href="/auth/register"
+              style={{
+                padding: '0.5rem 1.5rem',
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                borderRadius: '0.5rem',
+                color: 'white',
+                textDecoration: 'none',
+                transition: 'opacity 0.2s',
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.9')}
+              onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
+            >
+              Sign Up
+            </Link>
+          </div>
+        </nav>
       </header>
 
-      <main style={styles.main}>
-        <div style={{ ...styles.panel, borderRight: '1px solid #374151' }}>
-          <div style={styles.panelHeader}>
-            <h2 style={styles.panelTitle}>OpenAPI/Swagger YAML</h2>
-            <div style={styles.buttonGroup}>
-              <button
-                onClick={loadExample}
-                style={styles.button}
-                onMouseEnter={(e) => (e.currentTarget.style.background = '#4b5563')}
-                onMouseLeave={(e) => (e.currentTarget.style.background = '#374151')}
-              >
-                Load Example
-              </button>
-              <button
-                onClick={() => fileInputRef.current?.click()}
-                style={styles.button}
-                onMouseEnter={(e) => (e.currentTarget.style.background = '#4b5563')}
-                onMouseLeave={(e) => (e.currentTarget.style.background = '#374151')}
-              >
-                Upload File
-              </button>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept=".yaml,.yml"
-                onChange={handleFileUpload}
-                style={styles.hiddenInput}
-              />
-            </div>
-          </div>
-          <textarea
-            value={yamlInput}
-            onChange={(e) => setYamlInput(e.target.value)}
-            placeholder="Paste your OpenAPI/Swagger YAML here or upload a file..."
-            style={styles.textarea}
-            spellCheck={false}
-          />
-        </div>
+      {/* Hero */}
+      <section style={styles.hero}>
+        <h1 style={styles.heroTitle}>
+          10x Your Team's <br />
+          <span style={styles.gradient}>Development Productivity</span>
+        </h1>
+        <p style={styles.heroSubtitle}>
+          Generate production-ready HTTP request files from OpenAPI specs<br />
+          with realistic mock data in seconds, not hours.
+        </p>
+        <Link href="/app" style={styles.ctaButton}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.boxShadow = '0 15px 50px rgba(102, 126, 234, 0.4)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 10px 40px rgba(102, 126, 234, 0.3)';
+          }}
+        >
+          Try Now - No Registration Required
+        </Link>
+      </section>
 
-        <div style={styles.panel}>
-          <div style={styles.panelHeader}>
-            <h2 style={styles.panelTitle}>Generated HTTP Requests</h2>
-            {httpOutput && (
-              <div style={styles.buttonGroup}>
-                <button
-                  onClick={copyToClipboard}
-                  style={styles.button}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = '#4b5563')}
-                  onMouseLeave={(e) => (e.currentTarget.style.background = '#374151')}
-                >
-                  Copy
-                </button>
-                <button
-                  onClick={downloadHttpFile}
-                  style={{ ...styles.button, ...styles.buttonPrimary }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = '#1d4ed8')}
-                  onMouseLeave={(e) => (e.currentTarget.style.background = '#2563eb')}
-                >
-                  Download .http
-                </button>
-              </div>
-            )}
-          </div>
-          <div style={styles.outputContainer}>
-            {httpOutput ? (
-              <SyntaxHighlighter
-                language="http"
-                style={atomOneDark}
-                customStyle={{
-                  margin: 0,
-                  padding: '1rem',
-                  background: 'transparent',
-                  fontSize: '0.875rem',
-                }}
-                wrapLongLines={true}
-              >
-                {httpOutput}
-              </SyntaxHighlighter>
-            ) : (
-              <div style={styles.placeholder}>
-                Generated HTTP requests will appear here...
-              </div>
-            )}
-          </div>
-        </div>
-      </main>
-
-      <footer style={styles.footer}>
-        <div style={styles.footerContent}>
-          <button
-            onClick={generateHttpRequests}
-            disabled={!yamlInput || loading}
-            style={{
-              ...styles.generateButton,
-              ...((!yamlInput || loading) && {
-                background: '#4b5563',
-                cursor: 'not-allowed',
-              }),
-            }}
+      {/* Features */}
+      <section id="features" style={styles.features}>
+        <h2 style={styles.sectionTitle}>Why Development Teams Choose MockPilot</h2>
+        <div style={styles.featureGrid}>
+          <div 
+            style={styles.featureCard}
             onMouseEnter={(e) => {
-              if (!yamlInput || loading) return;
-              e.currentTarget.style.background = '#1d4ed8';
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.borderColor = '#667eea';
             }}
             onMouseLeave={(e) => {
-              if (!yamlInput || loading) {
-                e.currentTarget.style.background = '#4b5563';
-              } else {
-                e.currentTarget.style.background = '#2563eb';
-              }
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.borderColor = '#1f2937';
             }}
           >
-            {loading ? 'Generating...' : 'Generate HTTP Requests'}
-          </button>
-          
-          {error && (
-            <div style={styles.error}>
-              {error}
-            </div>
-          )}
+            <div style={styles.featureIcon}>⚡</div>
+            <h3 style={styles.featureTitle}>Lightning Fast</h3>
+            <p style={styles.featureDesc}>
+              Generate complete HTTP request files in seconds. Stop wasting hours writing boilerplate API calls.
+            </p>
+          </div>
+
+          <div 
+            style={styles.featureCard}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.borderColor = '#667eea';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.borderColor = '#1f2937';
+            }}
+          >
+            <div style={styles.featureIcon}>🎯</div>
+            <h3 style={styles.featureTitle}>Realistic Mock Data</h3>
+            <p style={styles.featureDesc}>
+              Powered by Faker.js, generate realistic test data that matches your API schema perfectly.
+            </p>
+          </div>
+
+          <div 
+            style={styles.featureCard}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.borderColor = '#667eea';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.borderColor = '#1f2937';
+            }}
+          >
+            <div style={styles.featureIcon}>🔧</div>
+            <h3 style={styles.featureTitle}>VS Code Compatible</h3>
+            <p style={styles.featureDesc}>
+              Generated .http files work seamlessly with VS Code REST Client and other popular tools.
+            </p>
+          </div>
+
+          <div 
+            style={styles.featureCard}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.borderColor = '#667eea';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.borderColor = '#1f2937';
+            }}
+          >
+            <div style={styles.featureIcon}>📦</div>
+            <h3 style={styles.featureTitle}>OpenAPI Support</h3>
+            <p style={styles.featureDesc}>
+              Supports OpenAPI 3.0 and Swagger 2.0 specifications out of the box.
+            </p>
+          </div>
+
+          <div 
+            style={styles.featureCard}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.borderColor = '#667eea';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.borderColor = '#1f2937';
+            }}
+          >
+            <div style={styles.featureIcon}>🚀</div>
+            <h3 style={styles.featureTitle}>CLI for Teams</h3>
+            <p style={styles.featureDesc}>
+              Automate with our powerful CLI. Perfect for CI/CD pipelines and team workflows.
+            </p>
+          </div>
+
+          <div 
+            style={styles.featureCard}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.borderColor = '#667eea';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.borderColor = '#1f2937';
+            }}
+          >
+            <div style={styles.featureIcon}>🤖</div>
+            <h3 style={styles.featureTitle}>AI-Powered Testing</h3>
+            <p style={styles.featureDesc}>
+              Professional tier includes AI-based context-aware test data generation for edge cases.
+            </p>
+          </div>
         </div>
+      </section>
+
+      {/* Pricing */}
+      <section id="pricing" style={styles.pricing}>
+        <h2 style={styles.sectionTitle}>Simple, Transparent Pricing</h2>
+        <div style={styles.pricingGrid}>
+          {/* Free Tier */}
+          <div style={styles.pricingCard}>
+            <div style={styles.pricingTier}>Free</div>
+            <div style={styles.pricingPrice}>$0</div>
+            <div style={styles.pricingPeriod}>Forever free</div>
+            <ul style={styles.pricingFeatures}>
+              <li style={styles.pricingFeature}>✓ Web-based generator</li>
+              <li style={styles.pricingFeature}>✓ 3 generations per session</li>
+              <li style={styles.pricingFeature}>✓ OpenAPI 3.0 & Swagger 2.0</li>
+              <li style={styles.pricingFeature}>✓ Realistic mock data</li>
+              <li style={styles.pricingFeature}>✓ VS Code compatible</li>
+            </ul>
+            <Link 
+              href="/app" 
+              style={styles.pricingButton}
+              onMouseEnter={(e) => (e.currentTarget.style.background = '#374151')}
+              onMouseLeave={(e) => (e.currentTarget.style.background = '#1f2937')}
+            >
+              Try Now
+            </Link>
+          </div>
+
+          {/* Team Tier */}
+          <div style={{ ...styles.pricingCard, ...styles.pricingCardPopular }}>
+            <div style={styles.popularBadge}>MOST POPULAR</div>
+            <div style={styles.pricingTier}>Team</div>
+            <div style={styles.pricingPrice}>$29</div>
+            <div style={styles.pricingPeriod}>per user/month</div>
+            <ul style={styles.pricingFeatures}>
+              <li style={styles.pricingFeature}>✓ Everything in Free</li>
+              <li style={styles.pricingFeature}>✓ Unlimited generations</li>
+              <li style={styles.pricingFeature}>✓ CLI tool access</li>
+              <li style={styles.pricingFeature}>✓ CI/CD integration</li>
+              <li style={styles.pricingFeature}>✓ Priority support</li>
+              <li style={styles.pricingFeature}>✓ Team collaboration</li>
+            </ul>
+            <button
+              style={{ ...styles.pricingButton, ...styles.pricingButtonPrimary }}
+              onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.9')}
+              onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
+            >
+              Get Started
+            </button>
+          </div>
+
+          {/* Professional Tier */}
+          <div style={styles.pricingCard}>
+            <div style={styles.pricingTier}>Professional</div>
+            <div style={styles.pricingPrice}>$99</div>
+            <div style={styles.pricingPeriod}>per user/month</div>
+            <ul style={styles.pricingFeatures}>
+              <li style={styles.pricingFeature}>✓ Everything in Team</li>
+              <li style={styles.pricingFeature}>✓ AI-powered test data</li>
+              <li style={styles.pricingFeature}>✓ Context-aware generation</li>
+              <li style={styles.pricingFeature}>✓ Edge case detection</li>
+              <li style={styles.pricingFeature}>✓ Custom data patterns</li>
+              <li style={styles.pricingFeature}>✓ Dedicated support</li>
+            </ul>
+            <button
+              style={styles.pricingButton}
+              onMouseEnter={(e) => (e.currentTarget.style.background = '#374151')}
+              onMouseLeave={(e) => (e.currentTarget.style.background = '#1f2937')}
+            >
+              Contact Sales
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer style={styles.footer}>
+        <p>© 2026 MockPilot. Open source and built with ❤️ for developers.</p>
+        <p style={{ marginTop: '1rem' }}>
+          <a href="https://github.com" style={{ color: '#9ca3af', marginRight: '2rem', textDecoration: 'none' }}>GitHub</a>
+          <a href="#" style={{ color: '#9ca3af', marginRight: '2rem', textDecoration: 'none' }}>Documentation</a>
+          <a href="#" style={{ color: '#9ca3af', textDecoration: 'none' }}>Support</a>
+        </p>
       </footer>
     </div>
   );

@@ -1,0 +1,88 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push prod backend
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./apps/backend/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/mockpilot-backend:prod
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and push prod web
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./apps/web/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/mockpilot-web:prod
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Copy docker-compose to prod server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_SSH_USER }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          port: ${{ secrets.PROD_SSH_PORT }}
+          source: "docker-compose.prod.yml,kong.yml"
+          target: "~/mockpilot"
+
+      - name: Create prod .env file on server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_SSH_USER }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          port: ${{ secrets.PROD_SSH_PORT }}
+          script: |
+            cd ~/mockpilot
+            cat > .env << 'EOF'
+            PROD_POSTGRES_PASSWORD=${{ secrets.PROD_POSTGRES_PASSWORD }}
+            PROD_POSTGRES_DB=postgres
+            PROD_JWT_SECRET=${{ secrets.PROD_JWT_SECRET }}
+            PROD_ANON_KEY=${{ secrets.PROD_ANON_KEY }}
+            PROD_SERVICE_ROLE_KEY=${{ secrets.PROD_SERVICE_ROLE_KEY }}
+            PROD_API_EXTERNAL_URL=https://yourdomain.com
+            PROD_SITE_URL=https://yourdomain.com
+            PROD_ALLOWED_ORIGINS=https://yourdomain.com
+            EOF
+
+      - name: Deploy to prod server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_SSH_USER }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          port: ${{ secrets.PROD_SSH_PORT }}
+          script: |
+            cd ~/mockpilot
+            docker compose -f docker-compose.prod.yml pull
+            docker compose -f docker-compose.prod.yml up -d --build
+
+      - name: Deploy Notification
+        if: always()
+        run: echo "Production deployment completed"

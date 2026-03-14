@@ -1,0 +1,194 @@
+openapi: 3.0.0
+info:
+  title: Edge Cases API
+  version: 1.0.0
+  description: API with various edge cases and special schema keywords
+
+servers:
+  - url: https://api.edges.com
+
+paths:
+  /users:
+    post:
+      summary: Create user with edge cases
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserWithEdgeCases'
+      responses:
+        '201':
+          description: User created
+
+  /users/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get user
+      responses:
+        '200':
+          description: User details
+
+  /events:
+    get:
+      summary: List events
+      parameters:
+        - name: since
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: until
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: type
+          in: query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: pageSize
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+      responses:
+        '200':
+          description: Event list
+
+  /data:
+    get:
+      summary: Get various data types
+      responses:
+        '200':
+          description: Various types
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MixedTypes'
+
+  /numbers:
+    get:
+      summary: Number boundaries
+      parameters:
+        - name: floatVal
+          in: query
+          schema:
+            type: number
+            multipleOf: 0.5
+        - name: intVal
+          in: query
+          schema:
+            type: integer
+            minimum: 0
+            maximum: 100
+      responses:
+        '200':
+          description: OK
+
+  /pattern:
+    get:
+      summary: Pattern validation
+      parameters:
+        - name: email
+          in: query
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        - name: phone
+          in: query
+          schema:
+            type: string
+            pattern: '^\+[1-9]\d{1,14}$'
+      responses:
+        '200':
+          description: OK
+
+components:
+  schemas:
+    UserWithEdgeCases:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        password:
+          type: string
+          writeOnly: true
+          minLength: 8
+        nickname:
+          type: string
+          nullable: true
+        bio:
+          type: string
+          maxLength: 500
+        age:
+          type: integer
+          nullable: true
+        balance:
+          type: number
+          default: 0.0
+        isActive:
+          type: boolean
+          default: true
+        tags:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+        extra:
+          type: object
+          additionalProperties:
+            type: string
+
+    MixedTypes:
+      type: object
+      properties:
+        stringArray:
+          type: array
+          items:
+            type: string
+        intArray:
+          type: array
+          items:
+            type: integer
+        objArray:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              value:
+                type: number
+        nested:
+          type: object
+          properties:
+            level1:
+              type: object
+              properties:
+                level2:
+                  type: object
+                  properties:
+                    level3:
+                      type: string
+        map:
+          type: object
+          additionalProperties:
+            type: integer
+        tuple:
+          type: array
+          items:
+            - type: string
+            - type: integer
+            - type: boolean

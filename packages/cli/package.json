@@ -1,0 +1,37 @@
+{
+  "name": "@mockpilot/cli",
+  "version": "0.1.0",
+  "description": "MockPilot CLI - Generate HTTP files from OpenAPI specs",
+  "main": "dist/index.js",
+  "bin": {
+    "mockpilot": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@mockpilot/core": "workspace:*",
+    "commander": "^12.1.0",
+    "chalk": "^4.1.2",
+    "ora": "^5.4.1",
+    "conf": "^10.2.0",
+    "node-fetch": "^2.7.0",
+    "js-yaml": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/js-yaml": "^4.0.9",
+    "typescript": "^5.0.0"
+  },
+  "keywords": [
+    "openapi",
+    "swagger",
+    "http",
+    "mock",
+    "cli"
+  ],
+  "author": "",
+  "license": "MIT"
+}
