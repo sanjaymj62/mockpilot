@@ -13,19 +13,32 @@ export default function AuthCallback() {
       const fullUrl = window.location.href;
       const urlObj = new URL(fullUrl);
       
+      const token = urlObj.searchParams.get('token');
       const tokenHash = urlObj.searchParams.get('token_hash');
-      const type = urlObj.searchParams.get('type') || 'signup';
-      const redirectTo = urlObj.searchParams.get('redirect_to');
+      const hashParams = new URLSearchParams(window.location.hash.substring(1));
+      const hashToken = hashParams.get('token_hash');
+      const hashType = hashParams.get('type');
+      const type = urlObj.searchParams.get('type') || hashType || 'signup';
       
       console.log('=== Auth Callback Debug ===');
       console.log('Full URL:', fullUrl);
-      console.log('Token hash:', tokenHash ? 'present' : 'missing');
+      console.log('Hash:', window.location.hash);
+      console.log('Token (query):', token ? 'present' : 'missing');
+      console.log('TokenHash (query):', tokenHash ? 'present' : 'missing');
+      console.log('Token (hash):', hashToken ? 'present' : 'missing');
       console.log('Type:', type);
-      console.log('Redirect to:', redirectTo);
       console.log('===========================');
 
-      if (!tokenHash) {
-        console.log('No token hash in URL, checking for existing session...');
+      const tokenToUse = token || tokenHash || hashToken;
+
+      if (tokenToUse && !hashToken) {
+        console.log('Moving token to hash for Supabase auto-detection...');
+        window.location.hash = `token_hash=${tokenToUse}&type=${type}`;
+        return;
+      }
+
+      if (!tokenToUse) {
+        console.log('No token in URL, checking for existing session...');
         const { data: { session }, error } = await supabase.auth.getSession();
         
         if (error) {
