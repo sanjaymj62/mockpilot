@@ -29,7 +29,7 @@ jobs:
       - name: Build packages
         run: pnpm build
         env:
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.PROD_API_EXTERNAL_URL }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.PROD_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.PROD_ANON_KEY }}
 
       - name: Set up Docker Buildx
@@ -89,9 +89,9 @@ jobs:
             PROD_JWT_SECRET=${{ secrets.PROD_JWT_SECRET }}
             PROD_ANON_KEY=${{ secrets.PROD_ANON_KEY }}
             PROD_SERVICE_ROLE_KEY=${{ secrets.PROD_SERVICE_ROLE_KEY }}
-            PROD_API_EXTERNAL_URL=https://yourdomain.com
-            PROD_SITE_URL=https://yourdomain.com
-            PROD_ALLOWED_ORIGINS=https://yourdomain.com
+            PROD_API_EXTERNAL_URL=${{ secrets.PROD_API_EXTERNAL_URL }}
+            PROD_SITE_URL=${{ secrets.PROD_SITE_URL }}
+            PROD_ALLOWED_ORIGINS=${{ secrets.PROD_ALLOWED_ORIGINS }}
             PROD_RESEND_API_KEY=${{ secrets.PROD_RESEND_API_KEY }}
             PROD_SMTP_ADMIN_EMAIL=${{ secrets.PROD_SMTP_ADMIN_EMAIL }}
             EOF

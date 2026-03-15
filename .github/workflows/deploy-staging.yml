@@ -29,7 +29,7 @@ jobs:
       - name: Build packages
         run: pnpm build
         env:
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.STAGING_API_EXTERNAL_URL }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.STAGING_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.STAGING_ANON_KEY }}
 
       - name: Debug - Check standalone structure
@@ -95,9 +95,9 @@ jobs:
             STAGING_JWT_SECRET=${{ secrets.STAGING_JWT_SECRET }}
             STAGING_ANON_KEY=${{ secrets.STAGING_ANON_KEY }}
             STAGING_SERVICE_ROLE_KEY=${{ secrets.STAGING_SERVICE_ROLE_KEY }}
-            STAGING_API_EXTERNAL_URL=https://staging.yourdomain.com
-            STAGING_SITE_URL=https://staging.yourdomain.com
-            STAGING_ALLOWED_ORIGINS=https://staging.yourdomain.com
+            STAGING_API_EXTERNAL_URL=${{ secrets.STAGING_API_EXTERNAL_URL }}
+            STAGING_SITE_URL=${{ secrets.STAGING_SITE_URL }}
+            STAGING_ALLOWED_ORIGINS=${{ secrets.STAGING_ALLOWED_ORIGINS }}
             STAGING_RESEND_API_KEY=${{ secrets.STAGING_RESEND_API_KEY }}
             STAGING_SMTP_ADMIN_EMAIL=${{ secrets.STAGING_SMTP_ADMIN_EMAIL }}
             EOF
