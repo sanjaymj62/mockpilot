@@ -31,18 +31,39 @@ export default function AuthCallback() {
       const tokenToUse = token || tokenHash || hashToken;
 
       if (tokenToUse) {
-        console.log('Verifying token via GoTrue API...');
+        let email = urlObj.searchParams.get('email') || hashParams.get('email');
+        
+        if (!email) {
+          console.log('No email in URL, extracting from JWT token...');
+          try {
+            const parts = tokenToUse.split('.');
+            if (parts.length === 3) {
+              const payload = JSON.parse(atob(parts[1]));
+              email = payload.email;
+              console.log('Extracted email from token:', email);
+            }
+          } catch (err) {
+            console.error('Failed to decode token:', err);
+          }
+        }
+
+        console.log('Verifying token via GoTrue API...', { token: tokenToUse, type, email });
         
         try {
+          const verifyBody: Record<string, string> = {
+            token: tokenToUse,
+            type: type,
+          };
+          if (email) {
+            verifyBody.email = email;
+          }
+          
           const response = await fetch('http://91.98.125.157:8000/auth/v1/verify', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-              token: tokenToUse,
-              type: type,
-            }),
+            body: JSON.stringify(verifyBody),
           });
           
           const data = await response.json();
