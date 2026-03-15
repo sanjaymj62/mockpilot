@@ -59,10 +59,10 @@ services:
       GOTRUE_SMTP_USER: resend
       GOTRUE_SMTP_PASS: ${STAGING_RESEND_API_KEY}
       GOTRUE_SMTP_ADMIN_EMAIL: ${STAGING_SMTP_ADMIN_EMAIL}
-      GOTRUE_MAILER_URLPATHS_CONFIRMATION: /auth/callback
-      GOTRUE_MAILER_URLPATHS_INVITE: /auth/callback
-      GOTRUE_MAILER_URLPATHS_RECOVERY: /auth/callback
-      GOTRUE_MAILER_URLPATHS_EMAIL_CHANGE: /auth/callback
+      GOTRUE_MAILER_URLPATHS_CONFIRMATION: http://91.98.125.157:3000/auth/callback
+      GOTRUE_MAILER_URLPATHS_INVITE: http://91.98.125.157:3000/auth/callback
+      GOTRUE_MAILER_URLPATHS_RECOVERY: http://91.98.125.157:3000/auth/callback
+      GOTRUE_MAILER_URLPATHS_EMAIL_CHANGE: http://91.98.125.157:3000/auth/callback
     depends_on:
       postgres:
         condition: service_healthy
