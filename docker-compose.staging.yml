@@ -111,9 +111,7 @@ services:
     restart: unless-stopped
 
   backend:
-    build:
-      context: .
-      dockerfile: apps/backend/Dockerfile
+    image: ${DOCKERHUB_USERNAME}/mockpilot-backend:staging
     container_name: mockpilot-staging-backend
     environment:
       NODE_ENV: production
@@ -130,9 +128,7 @@ services:
     restart: unless-stopped
 
   web:
-    build:
-      context: .
-      dockerfile: apps/web/Dockerfile
+    image: ${DOCKERHUB_USERNAME}/mockpilot-web:staging
     container_name: mockpilot-staging-web
     environment:
       NODE_ENV: production
