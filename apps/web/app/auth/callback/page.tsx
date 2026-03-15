@@ -38,7 +38,11 @@ export default function AuthCallback() {
           try {
             const parts = tokenToUse.split('.');
             if (parts.length === 3) {
-              const payload = JSON.parse(atob(parts[1]));
+              let base64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+              while (base64.length % 4) {
+                base64 += '=';
+              }
+              const payload = JSON.parse(atob(base64));
               email = payload.email;
               console.log('Extracted email from token:', email);
             }
