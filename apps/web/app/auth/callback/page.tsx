@@ -31,10 +31,26 @@ export default function AuthCallback() {
 
       const tokenToUse = token || tokenHash || hashToken;
 
-      if (tokenToUse && !hashToken) {
-        console.log('Moving token to hash for Supabase auto-detection...');
-        window.location.hash = `token_hash=${tokenToUse}&type=${type}`;
-        return;
+      if (tokenToUse) {
+        console.log('Exchanging token for session using setSession...');
+        
+        const { data: sessionData, error: sessionError } = await supabase.auth.setSession({
+          access_token: tokenToUse,
+          refresh_token: '',
+        });
+
+        console.log('setSession result:', sessionData?.session ? 'Session established' : 'No session', sessionError ? `Error: ${sessionError.message}` : 'No error');
+
+        if (sessionData?.session) {
+          console.log('Session established successfully, redirecting to /app');
+          setStatus('success');
+          router.push('/app');
+          return;
+        }
+
+        if (sessionError) {
+          console.error('setSession error:', sessionError);
+        }
       }
 
       if (!tokenToUse) {
