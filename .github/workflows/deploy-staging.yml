@@ -32,6 +32,12 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.STAGING_API_EXTERNAL_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.STAGING_ANON_KEY }}
 
+      - name: Debug - Check standalone structure
+        run: |
+          echo "=== Checking standalone output ==="
+          ls -la apps/web/.next/standalone/ || echo "No standalone directory"
+          find apps/web/.next/standalone -name "server.js" -type f || echo "No server.js found"
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
