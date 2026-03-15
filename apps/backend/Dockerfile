@@ -9,7 +9,7 @@ FROM base AS builder
 WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 RUN corepack enable pnpm && pnpm install --frozen-lockfile
-COPY packages/core packages/backend apps/backend ./
+COPY packages/core apps/backend ./
 RUN pnpm build:core && pnpm build:backend
 
 FROM base AS runner
