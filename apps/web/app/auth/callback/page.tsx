@@ -43,8 +43,11 @@ export default function AuthCallback() {
                 base64 += '=';
               }
               const payload = JSON.parse(atob(base64));
-              email = payload.email;
+              console.log('JWT payload:', payload);
+              email = payload.email || payload.email_confirm || payload.new_email;
               console.log('Extracted email from token:', email);
+            } else {
+              console.log('Token does not have 3 parts:', parts.length);
             }
           } catch (err) {
             console.error('Failed to decode token:', err);
@@ -62,10 +65,12 @@ export default function AuthCallback() {
             verifyBody.email = email;
           }
           
+          const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
           const response = await fetch('http://91.98.125.157:8000/auth/v1/verify', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
+              'apikey': anonKey,
             },
             body: JSON.stringify(verifyBody),
           });
