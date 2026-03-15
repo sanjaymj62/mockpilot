@@ -103,7 +103,8 @@ jobs:
           port: ${{ secrets.PROD_SSH_PORT }}
           script: |
             cd ~/mockpilot
-            docker-compose -f docker-compose.prod.yml up -d
+            docker-compose -f docker-compose.prod.yml pull
+            docker-compose -f docker-compose.prod.yml up -d --force-recreate
 
       - name: Deploy Notification
         if: always()

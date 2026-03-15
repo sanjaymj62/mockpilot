@@ -103,7 +103,8 @@ jobs:
           port: ${{ secrets.STAGING_SSH_PORT }}
           script: |
             cd ~/mockpilot
-            docker-compose -f docker-compose.staging.yml up -d
+            docker-compose -f docker-compose.staging.yml pull
+            docker-compose -f docker-compose.staging.yml up -d --force-recreate
 
       - name: Deploy Notification
         if: always()
