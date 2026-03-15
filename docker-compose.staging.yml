@@ -63,6 +63,8 @@ services:
       GOTRUE_MAILER_URLPATHS_INVITE: /auth/callback
       GOTRUE_MAILER_URLPATHS_RECOVERY: /auth/callback
       GOTRUE_MAILER_URLPATHS_EMAIL_CHANGE: /auth/callback
+      GOTRUE_REDIRECT_ENABLED: 'true'
+      GOTRUE_REDIRECT_PROXY_URL: ${STAGING_SITE_URL}/auth/callback
     depends_on:
       postgres:
         condition: service_healthy
