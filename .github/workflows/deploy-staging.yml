@@ -98,6 +98,8 @@ jobs:
             STAGING_API_EXTERNAL_URL=https://staging.yourdomain.com
             STAGING_SITE_URL=https://staging.yourdomain.com
             STAGING_ALLOWED_ORIGINS=https://staging.yourdomain.com
+            STAGING_RESEND_API_KEY=${{ secrets.STAGING_RESEND_API_KEY }}
+            STAGING_SMTP_ADMIN_EMAIL=${{ secrets.STAGING_SMTP_ADMIN_EMAIL }}
             EOF
 
       - name: Deploy to staging server

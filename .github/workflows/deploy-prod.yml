@@ -92,6 +92,8 @@ jobs:
             PROD_API_EXTERNAL_URL=https://yourdomain.com
             PROD_SITE_URL=https://yourdomain.com
             PROD_ALLOWED_ORIGINS=https://yourdomain.com
+            PROD_RESEND_API_KEY=${{ secrets.PROD_RESEND_API_KEY }}
+            PROD_SMTP_ADMIN_EMAIL=${{ secrets.PROD_SMTP_ADMIN_EMAIL }}
             EOF
 
       - name: Deploy to prod server

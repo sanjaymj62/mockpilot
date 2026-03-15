@@ -53,7 +53,16 @@ services:
       GOTRUE_JWT_EXP: 3600
       GOTRUE_JWT_SECRET: ${STAGING_JWT_SECRET}
       GOTRUE_EXTERNAL_EMAIL_ENABLED: 'true'
-      GOTRUE_MAILER_AUTOCONFIRM: 'true'
+      GOTRUE_MAILER_AUTOCONFIRM: 'false'
+      GOTRUE_SMTP_HOST: smtp.resend.com
+      GOTRUE_SMTP_PORT: 587
+      GOTRUE_SMTP_USER: resend
+      GOTRUE_SMTP_PASS: ${STAGING_RESEND_API_KEY}
+      GOTRUE_SMTP_ADMIN_EMAIL: ${STAGING_SMTP_ADMIN_EMAIL}
+      GOTRUE_MAILER_URLPATHS_CONFIRMATION: /auth/confirm
+      GOTRUE_MAILER_URLPATHS_INVITE: /auth/invite
+      GOTRUE_MAILER_URLPATHS_RECOVERY: /auth/recovery
+      GOTRUE_MAILER_URLPATHS_EMAIL_CHANGE: /auth/email-change
     depends_on:
       postgres:
         condition: service_healthy
