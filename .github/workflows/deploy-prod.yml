@@ -70,7 +70,7 @@ jobs:
           username: ${{ secrets.PROD_SSH_USER }}
           key: ${{ secrets.PROD_SSH_KEY }}
           port: ${{ secrets.PROD_SSH_PORT }}
-          source: "docker-compose.prod.yml,kong.yml"
+          source: "docker-compose.prod.yml,kong.yml,init/"
           target: "~/mockpilot"
 
       - name: Create prod .env file on server
