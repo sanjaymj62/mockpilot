@@ -82,7 +82,7 @@ jobs:
           port: ${{ secrets.PROD_SSH_PORT }}
           script: |
             cd ~/mockpilot
-            cat > .env << 'EOF'
+            cat > .env <<EOF
             DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
             PROD_POSTGRES_PASSWORD=${{ secrets.PROD_POSTGRES_PASSWORD }}
             PROD_POSTGRES_DB=postgres
