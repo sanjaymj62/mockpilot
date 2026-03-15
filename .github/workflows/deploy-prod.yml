@@ -28,6 +28,9 @@ jobs:
 
       - name: Build packages
         run: pnpm build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.PROD_API_EXTERNAL_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.PROD_ANON_KEY }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
