@@ -23,4 +23,4 @@ EXPOSE 3000
 ENV PORT 3000
 ENV NEXT_PUBLIC_BACKEND_URL=http://backend:3001
 
-CMD ["node", "apps/web/.next/standalone/server.js"]
+CMD ["node", ".next/standalone/server.js"]
