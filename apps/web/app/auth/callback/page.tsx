@@ -22,78 +22,65 @@ export default function AuthCallback() {
       
       console.log('=== Auth Callback Debug ===');
       console.log('Full URL:', fullUrl);
-      console.log('Hash:', window.location.hash);
-      console.log('Token (query):', token ? 'present' : 'missing');
-      console.log('TokenHash (query):', tokenHash ? 'present' : 'missing');
-      console.log('Token (hash):', hashToken ? 'present' : 'missing');
+      console.log('Token:', token);
+      console.log('TokenHash:', tokenHash);
+      console.log('HashToken:', hashToken);
       console.log('Type:', type);
       console.log('===========================');
 
       const tokenToUse = token || tokenHash || hashToken;
 
       if (tokenToUse) {
-        console.log('Exchanging token for session using setSession...');
+        console.log('Verifying token via GoTrue API...');
         
-        const { data: sessionData, error: sessionError } = await supabase.auth.setSession({
-          access_token: tokenToUse,
-          refresh_token: '',
-        });
+        try {
+          const response = await fetch('http://91.98.125.157:8000/auth/v1/verify', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              token: tokenToUse,
+              type: type,
+            }),
+          });
+          
+          const data = await response.json();
+          console.log('Verify response:', response.status, data);
+          
+          if (response.ok && data.access_token) {
+            console.log('Token verified, setting session...');
+            
+            const { data: sessionData, error: sessionError } = await supabase.auth.setSession({
+              access_token: data.access_token,
+              refresh_token: data.refresh_token,
+            });
 
-        console.log('setSession result:', sessionData?.session ? 'Session established' : 'No session', sessionError ? `Error: ${sessionError.message}` : 'No error');
-
-        if (sessionData?.session) {
-          console.log('Session established successfully, redirecting to /app');
-          setStatus('success');
-          router.push('/app');
-          return;
-        }
-
-        if (sessionError) {
-          console.error('setSession error:', sessionError);
+            if (sessionError) {
+              console.error('setSession error:', sessionError);
+            } else if (sessionData?.session) {
+              console.log('Session established, redirecting to /app');
+              setStatus('success');
+              router.push('/app');
+              return;
+            }
+          } else {
+            console.error('Verify failed:', data);
+          }
+        } catch (err) {
+          console.error('Verify request failed:', err);
         }
       }
 
-      if (!tokenToUse) {
-        console.log('No token in URL, checking for existing session...');
-        const { data: { session }, error } = await supabase.auth.getSession();
-        
-        if (error) {
-          console.error('Session error:', error);
-          setStatus('error');
-          router.push('/auth/login?error=callback_failed');
-          return;
-        }
-
-        if (session) {
-          console.log('Existing session found');
-          setStatus('success');
-          router.push('/app');
-        } else {
-          console.log('No session found');
-          setStatus('no_session');
-          router.push('/auth/login');
-        }
-        return;
-      }
-
-      console.log('Calling getSession to exchange token...');
-      const { data, error } = await supabase.auth.getSession();
+      console.log('Falling back to getSession...');
+      const { data: { session }, error } = await supabase.auth.getSession();
       
-      console.log('Result:', data?.session ? 'Session exists' : 'No session', error ? `Error: ${error.message}` : 'No error');
-
-      if (error) {
-        console.error('Error exchanging token:', error);
-        setStatus('error');
-        router.push('/auth/login?error=verification_failed');
-        return;
-      }
-
-      if (data.session) {
-        console.log('Session established successfully, redirecting to /app');
+      console.log('getSession result:', session ? 'has session' : 'no session', error || '');
+      
+      if (session) {
         setStatus('success');
         router.push('/app');
       } else {
-        console.log('No session after token exchange');
         setStatus('no_session');
         router.push('/auth/login');
       }
