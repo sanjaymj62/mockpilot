@@ -8,12 +8,12 @@ RUN addgroup --system --gid 1001 nextjs
 RUN adduser --system --uid 1001 nextjs
 
 COPY apps/web/.next/standalone ./
-COPY apps/web/.next/static ./mockpilot/apps/web/.next/static
-COPY apps/web/public ./mockpilot/apps/web/public
+COPY apps/web/.next/static ./apps/web/.next/static
+COPY apps/web/public ./apps/web/public
 
 USER nextjs
 
-WORKDIR /app/mockpilot/apps/web
+WORKDIR /app/apps/web
 
 EXPOSE 3000
 
