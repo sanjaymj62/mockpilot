@@ -51,7 +51,7 @@ jobs:
           port: ${{ secrets.STAGING_SSH_PORT }}
           script: |
             cd ~/mockpilot
-            docker compose -f docker-compose.staging.yml up -d --build
+            docker-compose -f docker-compose.staging.yml up -d --build
 
       - name: Deploy Notification
         if: always()

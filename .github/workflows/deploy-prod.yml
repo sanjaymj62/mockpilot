@@ -51,7 +51,7 @@ jobs:
           port: ${{ secrets.PROD_SSH_PORT }}
           script: |
             cd ~/mockpilot
-            docker compose -f docker-compose.prod.yml up -d --build
+            docker-compose -f docker-compose.prod.yml up -d --build
 
       - name: Deploy Notification
         if: always()

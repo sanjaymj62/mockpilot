@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   postgres:
-    image: supabase/postgres:15.6.1.147
+    image: supabase/postgres:15.1.0.147
     container_name: supabase-prod-db
     environment:
       POSTGRES_PASSWORD: ${PROD_POSTGRES_PASSWORD}
