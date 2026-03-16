@@ -58,7 +58,7 @@ export default function AuthCallback() {
         
         try {
           const verifyBody: Record<string, string> = {
-            token: tokenToUse,
+            token_hash: tokenToUse,
             type: type,
           };
           if (email) {
