@@ -32,6 +32,8 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.PROD_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.PROD_ANON_KEY }}
           NEXT_PUBLIC_BACKEND_URL: ${{ secrets.PROD_BACKEND_URL }}
+          NEXT_PUBLIC_DODO_PRODUCT_TEAM: ${{ secrets.PROD_DODO_PRODUCT_TEAM }}
+          NEXT_PUBLIC_DODO_PRODUCT_PRO: ${{ secrets.PROD_DODO_PRODUCT_PRO }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -99,6 +101,8 @@ jobs:
             PROD_DODO_WEBHOOK_SECRET=${{ secrets.PROD_DODO_WEBHOOK_SECRET }}
             PROD_DODO_PRICE_PRO=${{ secrets.PROD_DODO_PRICE_PRO }}
             PROD_DODO_PRICE_TEAM=${{ secrets.PROD_DODO_PRICE_TEAM }}
+            PROD_DODO_PRODUCT_PRO=${{ secrets.PROD_DODO_PRODUCT_PRO }}
+            PROD_DODO_PRODUCT_TEAM=${{ secrets.PROD_DODO_PRODUCT_TEAM }}
             EOF
 
       - name: Deploy to prod server

@@ -41,6 +41,8 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.STAGING_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.STAGING_ANON_KEY }}
           NEXT_PUBLIC_BACKEND_URL: ${{ secrets.STAGING_BACKEND_URL }}
+          NEXT_PUBLIC_DODO_PRODUCT_TEAM: ${{ secrets.STAGING_DODO_PRODUCT_TEAM }}
+          NEXT_PUBLIC_DODO_PRODUCT_PRO: ${{ secrets.STAGING_DODO_PRODUCT_PRO }}
 
       - name: Debug - Check standalone structure
         run: |
@@ -114,6 +116,8 @@ jobs:
             STAGING_DODO_WEBHOOK_SECRET=${{ secrets.STAGING_DODO_WEBHOOK_SECRET }}
             STAGING_DODO_PRICE_PRO=${{ secrets.STAGING_DODO_PRICE_PRO }}
             STAGING_DODO_PRICE_TEAM=${{ secrets.STAGING_DODO_PRICE_TEAM }}
+            STAGING_DODO_PRODUCT_PRO=${{ secrets.STAGING_DODO_PRODUCT_PRO }}
+            STAGING_DODO_PRODUCT_TEAM=${{ secrets.STAGING_DODO_PRODUCT_TEAM }}
             EOF
 
       - name: Deploy to staging server
