@@ -127,6 +127,11 @@ services:
       SUPABASE_URL: http://kong:8000
       SUPABASE_KEY: ${PROD_ANON_KEY}
       SUPABASE_SERVICE_KEY: ${PROD_SERVICE_ROLE_KEY}
+      DODO_API_KEY: ${PROD_DODO_API_KEY}
+      DODO_WEBHOOK_SECRET: ${PROD_DODO_WEBHOOK_SECRET}
+      DODO_PRICE_PRO: ${PROD_DODO_PRICE_PRO}
+      DODO_PRICE_TEAM: ${PROD_DODO_PRICE_TEAM}
+      FRONTEND_URL: https://your-prod-domain.com
     depends_on:
       - kong
       - postgres

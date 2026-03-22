@@ -71,7 +71,7 @@ jobs:
           username: ${{ secrets.PROD_SSH_USER }}
           key: ${{ secrets.PROD_SSH_KEY }}
           port: ${{ secrets.PROD_SSH_PORT }}
-          source: "docker-compose.prod.yml,kong.yml,init/"
+          source: "docker-compose.prod.yml,kong.yml,init/,supabase/migrations/"
           target: "~/mockpilot"
 
       - name: Create prod .env file on server
@@ -95,6 +95,10 @@ jobs:
             PROD_ALLOWED_ORIGINS=${{ secrets.PROD_ALLOWED_ORIGINS }}
             PROD_RESEND_API_KEY=${{ secrets.PROD_RESEND_API_KEY }}
             PROD_SMTP_ADMIN_EMAIL=${{ secrets.PROD_SMTP_ADMIN_EMAIL }}
+            PROD_DODO_API_KEY=${{ secrets.PROD_DODO_API_KEY }}
+            PROD_DODO_WEBHOOK_SECRET=${{ secrets.PROD_DODO_WEBHOOK_SECRET }}
+            PROD_DODO_PRICE_PRO=${{ secrets.PROD_DODO_PRICE_PRO }}
+            PROD_DODO_PRICE_TEAM=${{ secrets.PROD_DODO_PRICE_TEAM }}
             EOF
 
       - name: Deploy to prod server
@@ -108,6 +112,19 @@ jobs:
             cd ~/mockpilot
             docker-compose -f docker-compose.prod.yml pull
             docker-compose -f docker-compose.prod.yml up -d --force-recreate
+            sleep 10
+
+      - name: Run database migrations
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_SSH_USER }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          port: ${{ secrets.PROD_SSH_PORT }}
+          script: |
+            cd ~/mockpilot
+            docker cp supabase/migrations/20260222000004_create_purchases.sql supabase-prod-db:/tmp/
+            docker exec supabase-prod-db psql -U postgres -d postgres -f /tmp/20260222000004_create_purchases.sql || echo "Migration may already exist, continuing..."
 
       - name: Deploy Notification
         if: always()
