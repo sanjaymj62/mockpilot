@@ -67,8 +67,7 @@ jobs:
           push: true
           platforms: linux/amd64
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/mockpilot-backend:staging
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          no-cache: true
 
       - name: Build and push web
         uses: docker/build-push-action@v5
@@ -78,8 +77,7 @@ jobs:
           push: true
           platforms: linux/amd64
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/mockpilot-web:staging
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          no-cache: true
 
       - name: Copy docker-compose to staging server
         uses: appleboy/scp-action@v0.1.7
