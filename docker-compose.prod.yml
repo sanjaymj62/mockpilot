@@ -120,6 +120,7 @@ services:
   backend:
     image: ${DOCKERHUB_USERNAME}/mockpilot-backend:prod
     platform: linux/amd64
+    pull_policy: always
     container_name: mockpilot-prod-backend
     environment:
       NODE_ENV: production
@@ -143,6 +144,7 @@ services:
   web:
     image: ${DOCKERHUB_USERNAME}/mockpilot-web:prod
     platform: linux/amd64
+    pull_policy: always
     container_name: mockpilot-prod-web
     environment:
       NODE_ENV: production

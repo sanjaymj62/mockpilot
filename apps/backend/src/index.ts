@@ -109,9 +109,8 @@ app.post('/api/verify-token', async (req: Request, res: Response) => {
 app.post('/api/create-checkout', async (req: Request, res: Response) => {
   try {
     const { productId, userId, userEmail, userName } = req.body;
-    console.log('create-checkout received:', { productId, userId, userEmail, userName });
 
-    if ( !userId) {
+    if (!userId) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
