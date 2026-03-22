@@ -216,8 +216,8 @@ export default function PlansPage() {
   }
 
   const PRODUCT_IDS = {
-    team: process.env.NEXT_PUBLIC_DODO_PRODUCT_TEAM || '',
-    professional: process.env.NEXT_PUBLIC_DODO_PRODUCT_PRO || '',
+    team: 'pdt_0NZ9JhvVa7AvXh2yQOMRP',
+    professional: 'pdt_0NZ9JhvVa7AvXh2yQOMRP',
   };
 
   return (
