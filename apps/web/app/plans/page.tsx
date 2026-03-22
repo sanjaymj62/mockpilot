@@ -168,15 +168,19 @@ export default function PlansPage() {
   };
 
   const handleCheckout = async (productId: string, planName: string) => {
+    alert('productId: ' + productId + '\nbackendUrl: ' + (process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'));
     console.log('handleCheckout called with productId:', productId, 'planName:', planName);
-    alert('productId: ' + productId);
+    console.log('NEXT_PUBLIC_BACKEND_URL:', process.env.NEXT_PUBLIC_BACKEND_URL);
     if (!user) return;
     
     setCheckoutLoading(planName);
     
     try {
       const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
-      const response = await fetch(`${backendUrl}/api/create-checkout`, {
+      const fetchUrl = `${backendUrl}/api/create-checkout`;
+      console.log('Fetching from:', fetchUrl);
+      alert('Fetching from: ' + fetchUrl);
+      const response = await fetch(fetchUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
