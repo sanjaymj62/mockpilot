@@ -176,7 +176,8 @@ export default function ProfilePage() {
       if (!session?.access_token) return;
 
       // Call backend API instead of Supabase directly
-      const response = await fetch('http://localhost:3001/api/user/token', {
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+      const response = await fetch(`${backendUrl}/api/user/token`, {
         headers: {
           'Authorization': `Bearer ${session.access_token}`,
         },
@@ -200,7 +201,8 @@ export default function ProfilePage() {
       if (!session?.access_token) throw new Error('Not authenticated');
 
       // Call backend API instead of Supabase directly
-      const response = await fetch('http://localhost:3001/api/user/token/generate', {
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+      const response = await fetch(`${backendUrl}/api/user/token/generate`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${session.access_token}`,
@@ -245,7 +247,8 @@ export default function ProfilePage() {
       if (!session?.access_token) throw new Error('Not authenticated');
 
       // Call backend API to delete account
-      const response = await fetch('http://localhost:3001/api/user/delete', {
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+      const response = await fetch(`${backendUrl}/api/user/delete`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${session.access_token}`,
