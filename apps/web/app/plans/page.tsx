@@ -168,6 +168,7 @@ export default function PlansPage() {
   };
 
   const handleCheckout = async (productId: string, planName: string) => {
+    console.log('handleCheckout called with productId:', productId, 'planName:', planName);
     if (!user) return;
     
     setCheckoutLoading(planName);
