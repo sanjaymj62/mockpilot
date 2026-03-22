@@ -6,16 +6,17 @@ ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nodejs
 
-COPY package.json pnpm-lock.yaml ./
-COPY packages/core ./packages/core
-COPY apps/backend ./apps/backend
+COPY . .
 
-RUN npm install -g pnpm && \
-    pnpm install --frozen-lockfile --prod
+RUN npm install -g pnpm
 
-USER nodejs
+RUN pnpm install --frozen-lockfile && \
+    pnpm build:core && \
+    pnpm build:backend
 
 WORKDIR /app/apps/backend
+
+USER nodejs
 
 EXPOSE 3001
 
