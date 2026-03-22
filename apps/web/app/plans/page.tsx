@@ -132,7 +132,9 @@ const styles = {
 };
 
 export default function PlansPage() {
-  alert('PlansPage component loaded');
+  if (typeof window !== 'undefined') {
+    alert('PlansPage component loaded');
+  }
   const router = useRouter();
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -169,9 +171,11 @@ export default function PlansPage() {
   };
 
   const handleCheckout = async (productId: string, planName: string) => {
-    alert('productId: ' + productId + '\nbackendUrl: ' + (process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'));
-    console.log('handleCheckout called with productId:', productId, 'planName:', planName);
-    console.log('NEXT_PUBLIC_BACKEND_URL:', process.env.NEXT_PUBLIC_BACKEND_URL);
+    if (typeof window !== 'undefined') {
+      alert('productId: ' + productId + '\nbackendUrl: ' + (process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'));
+      console.log('handleCheckout called with productId:', productId, 'planName:', planName);
+      console.log('NEXT_PUBLIC_BACKEND_URL:', process.env.NEXT_PUBLIC_BACKEND_URL);
+    }
     if (!user) return;
     
     setCheckoutLoading(planName);
@@ -180,7 +184,9 @@ export default function PlansPage() {
       const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
       const fetchUrl = `${backendUrl}/api/create-checkout`;
       console.log('Fetching from:', fetchUrl);
-      alert('Fetching from: ' + fetchUrl);
+      if (typeof window !== 'undefined') {
+        alert('Fetching from: ' + fetchUrl);
+      }
       const response = await fetch(fetchUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
