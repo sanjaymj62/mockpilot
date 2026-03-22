@@ -132,6 +132,7 @@ const styles = {
 };
 
 export default function PlansPage() {
+  alert('PlansPage component loaded');
   const router = useRouter();
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
