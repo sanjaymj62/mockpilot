@@ -130,38 +130,16 @@ jobs:
           port: ${{ secrets.STAGING_SSH_PORT }}
           script: |
             cd ~/mockpilot
-            echo "Pulling latest images (forcing new pull)..."
-            docker pull sanjayjayaram/mockpilot-web:staging
-            docker pull sanjayjayaram/mockpilot-backend:staging
+            echo "Pulling latest images..."
+            docker pull --platform linux/amd64 sanjayjayaram/mockpilot-web:staging
+            docker pull --platform linux/amd64 sanjayjayaram/mockpilot-backend:staging
             echo "Stopping old containers..."
-            docker stop mockpilot-staging-web || true
-            docker rm mockpilot-staging-web || true
-            docker stop mockpilot-staging-backend || true
-            docker rm mockpilot-staging-backend || true
-            echo "Starting containers with pulled images..."
-            docker run -d --name mockpilot-staging-web --network supabase-staging-network -p 3000:3000 \
-              -e NODE_ENV=production \
-              -e NEXT_PUBLIC_BACKEND_URL=http://backend:3001 \
-              -e NEXT_PUBLIC_SUPABASE_URL=http://kong:8000 \
-              -e NEXT_PUBLIC_SUPABASE_ANON_KEY=${STAGING_ANON_KEY} \
-              sanjayjayaram/mockpilot-web:staging
-            docker run -d --name mockpilot-staging-backend --network supabase-staging-network -p 3001:3001 \
-              -e NODE_ENV=production \
-              -e PORT=3001 \
-              -e DATABASE_URL=postgres://postgres:${STAGING_POSTGRES_PASSWORD}@postgres:5432/${STAGING_POSTGRES_DB} \
-              -e SUPABASE_URL=http://kong:8000 \
-              -e SUPABASE_KEY=${STAGING_ANON_KEY} \
-              -e SUPABASE_SERVICE_KEY=${STAGING_SERVICE_ROLE_KEY} \
-              -e DODO_API_KEY=${STAGING_DODO_API_KEY} \
-              -e DODO_WEBHOOK_SECRET=${STAGING_DODO_WEBHOOK_SECRET} \
-              -e DODO_PRICE_PRO=${STAGING_DODO_PRICE_PRO} \
-              -e DODO_PRICE_TEAM=${STAGING_DODO_PRICE_TEAM} \
-              -e FRONTEND_URL=http://91.98.125.157:3000 \
-              sanjayjayaram/mockpilot-backend:staging
+            docker stop mockpilot-staging-web mockpilot-staging-backend 2>/dev/null || true
+            docker rm mockpilot-staging-web mockpilot-staging-backend 2>/dev/null || true
+            echo "Starting containers using docker-compose..."
+            docker-compose -f docker-compose.staging.yml up -d backend web
             echo "Verifying containers..."
             docker ps | grep mockpilot
-            echo "Container image digest for web:"
-            docker inspect mockpilot-staging-web --format='{{index .RepoDigests 0}}'
             sleep 10
 
       - name: Run database migrations
