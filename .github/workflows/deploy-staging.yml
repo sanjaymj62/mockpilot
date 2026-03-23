@@ -65,7 +65,7 @@ jobs:
           context: .
           file: ./apps/backend/Dockerfile
           push: true
-          platforms: linux/amd64
+          platforms: linux/arm64
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/mockpilot-backend:staging
           no-cache: true
 
@@ -75,7 +75,7 @@ jobs:
           context: .
           file: ./apps/web/Dockerfile
           push: true
-          platforms: linux/amd64
+          platforms: linux/arm64
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/mockpilot-web:staging
           no-cache: true
 
@@ -131,8 +131,8 @@ jobs:
           script: |
             cd ~/mockpilot
             echo "Pulling latest images..."
-            docker pull --platform linux/amd64 sanjayjayaram/mockpilot-web:staging
-            docker pull --platform linux/amd64 sanjayjayaram/mockpilot-backend:staging
+            docker pull --platform linux/arm64 sanjayjayaram/mockpilot-web:staging
+            docker pull --platform linux/arm64 sanjayjayaram/mockpilot-backend:staging
             echo "Stopping old containers..."
             docker stop mockpilot-staging-web mockpilot-staging-backend 2>/dev/null || true
             docker rm mockpilot-staging-web mockpilot-staging-backend 2>/dev/null || true
