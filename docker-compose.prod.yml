@@ -133,7 +133,7 @@ services:
       DODO_WEBHOOK_SECRET: ${PROD_DODO_WEBHOOK_SECRET}
       DODO_PRICE_PRO: ${PROD_DODO_PRICE_PRO}
       DODO_PRICE_TEAM: ${PROD_DODO_PRICE_TEAM}
-      FRONTEND_URL: https://your-prod-domain.com
+      FRONTEND_URL: https://mockpilot.dev
     depends_on:
       - kong
       - postgres
@@ -148,7 +148,7 @@ services:
     container_name: mockpilot-prod-web
     environment:
       NODE_ENV: production
-      NEXT_PUBLIC_BACKEND_URL: http://backend:3001
+      NEXT_PUBLIC_BACKEND_URL: /
       NEXT_PUBLIC_SUPABASE_URL: http://kong:8000
       NEXT_PUBLIC_SUPABASE_ANON_KEY: ${PROD_ANON_KEY}
       NEXT_PUBLIC_DODO_PRODUCT_TEAM: ${PROD_DODO_PRODUCT_TEAM}
