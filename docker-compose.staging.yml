@@ -41,12 +41,12 @@ services:
     environment:
       GOTRUE_API_HOST: 0.0.0.0
       GOTRUE_API_PORT: 9999
-      API_EXTERNAL_URL: http://91.98.125.157:8000
+      API_EXTERNAL_URL: https://staging.mockpilot.dev
       GOTRUE_DB_DRIVER: postgres
       GOTRUE_DB_DATABASE_URL: postgres://postgres:${STAGING_POSTGRES_PASSWORD}@postgres:5432/${STAGING_POSTGRES_DB}?search_path=auth
-      GOTRUE_SITE_URL: http://91.98.125.157:3000
-      GOTRUE_URI_ALLOW_LIST: http://91.98.125.157:3000
-      GOTRUE_EXTERNAL_URL: http://91.98.125.157:3000
+      GOTRUE_SITE_URL: https://staging.mockpilot.dev
+      GOTRUE_URI_ALLOW_LIST: https://staging.mockpilot.dev
+      GOTRUE_EXTERNAL_URL: https://staging.mockpilot.dev
       GOTRUE_DISABLE_SIGNUP: 'false'
       GOTRUE_JWT_ADMIN_ROLES: service_role
       GOTRUE_JWT_AUD: authenticated
@@ -60,10 +60,10 @@ services:
       GOTRUE_SMTP_USER: resend
       GOTRUE_SMTP_PASS: ${STAGING_RESEND_API_KEY}
       GOTRUE_SMTP_ADMIN_EMAIL: ${STAGING_SMTP_ADMIN_EMAIL}
-      GOTRUE_MAILER_URLPATHS_CONFIRMATION: http://91.98.125.157:3000/auth/callback
-      GOTRUE_MAILER_URLPATHS_INVITE: http://91.98.125.157:3000/auth/callback
-      GOTRUE_MAILER_URLPATHS_RECOVERY: http://91.98.125.157:3000/auth/callback
-      GOTRUE_MAILER_URLPATHS_EMAIL_CHANGE: http://91.98.125.157:3000/auth/callback
+      GOTRUE_MAILER_URLPATHS_CONFIRMATION: https://staging.mockpilot.dev/auth/callback
+      GOTRUE_MAILER_URLPATHS_INVITE: https://staging.mockpilot.dev/auth/callback
+      GOTRUE_MAILER_URLPATHS_RECOVERY: https://staging.mockpilot.dev/auth/callback
+      GOTRUE_MAILER_URLPATHS_EMAIL_CHANGE: https://staging.mockpilot.dev/auth/callback
     depends_on:
       postgres:
         condition: service_healthy
@@ -120,7 +120,7 @@ services:
 
   backend:
     image: ${DOCKERHUB_USERNAME}/mockpilot-backend:staging
-    platform: linux/arm64
+    platform: linux/amd64
     pull_policy: always
     container_name: mockpilot-staging-backend
     environment:
@@ -144,12 +144,12 @@ services:
 
   web:
     image: ${DOCKERHUB_USERNAME}/mockpilot-web:staging
-    platform: linux/arm64
+    platform: linux/amd64
     pull_policy: always
     container_name: mockpilot-staging-web
     environment:
       NODE_ENV: production
-      NEXT_PUBLIC_BACKEND_URL: /
+      NEXT_PUBLIC_BACKEND_URL: http://91.98.125.157:3001
       NEXT_PUBLIC_SUPABASE_URL: http://kong:8000
       NEXT_PUBLIC_SUPABASE_ANON_KEY: ${STAGING_ANON_KEY}
       NEXT_PUBLIC_DODO_PRODUCT_TEAM: ${STAGING_DODO_PRODUCT_TEAM}
