@@ -35,7 +35,7 @@ services:
     url: http://backend:3001
     routes:
       - name: backend-all
-        strip_path: true
+        strip_path: false
         paths:
           - /api/
     plugins:
