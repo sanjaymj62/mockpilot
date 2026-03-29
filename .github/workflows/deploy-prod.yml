@@ -83,7 +83,7 @@ jobs:
           port: ${{ secrets.PROD_SSH_PORT }}
           script: |
             cd ~/mockpilot
-            docker compose -f docker-compose.prod.yml build
+            DOCKER_BUILDKIT=0 docker compose -f docker-compose.prod.yml build
             docker compose -f docker-compose.prod.yml up -d
 
       - name: Run database migrations

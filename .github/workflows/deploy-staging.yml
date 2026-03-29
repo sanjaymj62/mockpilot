@@ -83,7 +83,7 @@ jobs:
           port: ${{ secrets.STAGING_SSH_PORT }}
           script: |
             cd ~/mockpilot
-            docker compose -f docker-compose.staging.yml build
+            DOCKER_BUILDKIT=0 docker compose -f docker-compose.staging.yml build
             docker compose -f docker-compose.staging.yml up -d
 
       - name: Run database migrations
