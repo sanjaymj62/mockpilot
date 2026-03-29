@@ -85,8 +85,9 @@ jobs:
             cd ~/mockpilot
             # Step 1: Build new images (old containers still running)
             DOCKER_BUILDKIT=0 docker compose -f docker-compose.staging.yml build
-            # Step 2: Stop old containers
+            # Step 2: Stop old containers and wait for ports to release
             docker rm -f mockpilot-staging-backend mockpilot-staging-web 2>/dev/null || true
+            sleep 5
             # Step 3: Start new containers
             docker compose -f docker-compose.staging.yml up -d
 
