@@ -83,8 +83,11 @@ jobs:
           port: ${{ secrets.STAGING_SSH_PORT }}
           script: |
             cd ~/mockpilot
-            docker rm -f mockpilot-staging-backend mockpilot-staging-web 2>/dev/null || true
+            # Step 1: Build new images (old containers still running)
             DOCKER_BUILDKIT=0 docker compose -f docker-compose.staging.yml build
+            # Step 2: Stop old containers
+            docker rm -f mockpilot-staging-backend mockpilot-staging-web 2>/dev/null || true
+            # Step 3: Start new containers
             docker compose -f docker-compose.staging.yml up -d
 
       - name: Run database migrations
