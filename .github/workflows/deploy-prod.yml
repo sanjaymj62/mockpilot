@@ -83,6 +83,7 @@ jobs:
           port: ${{ secrets.PROD_SSH_PORT }}
           script: |
             cd ~/mockpilot
+            docker rm -f mockpilot-prod-backend mockpilot-prod-web 2>/dev/null || true
             DOCKER_BUILDKIT=0 docker compose -f docker-compose.prod.yml build
             docker compose -f docker-compose.prod.yml up -d
 
