@@ -35,7 +35,7 @@ jobs:
             cat > .env <<EOF
             NEXT_PUBLIC_SUPABASE_URL=http://kong:8000
             NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.STAGING_ANON_KEY }}
-            NEXT_PUBLIC_BACKEND_URL=http://91.98.125.157:3001
+            NEXT_PUBLIC_BACKEND_URL=https://staging.mockpilot.dev
             NEXT_PUBLIC_DODO_PRODUCT_TEAM=${{ secrets.STAGING_DODO_PRODUCT_TEAM }}
             NEXT_PUBLIC_DODO_PRODUCT_PRO=${{ secrets.STAGING_DODO_PRODUCT_PRO }}
             STAGING_POSTGRES_PASSWORD=${{ secrets.STAGING_POSTGRES_PASSWORD }}

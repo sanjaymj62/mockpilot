@@ -35,7 +35,7 @@ jobs:
             cat > .env <<EOF
             NEXT_PUBLIC_SUPABASE_URL=http://kong:8000
             NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.PROD_ANON_KEY }}
-            NEXT_PUBLIC_BACKEND_URL=/
+            NEXT_PUBLIC_BACKEND_URL=https://mockpilot.dev
             NEXT_PUBLIC_DODO_PRODUCT_TEAM=${{ secrets.PROD_DODO_PRODUCT_TEAM }}
             NEXT_PUBLIC_DODO_PRODUCT_PRO=${{ secrets.PROD_DODO_PRODUCT_PRO }}
             PROD_POSTGRES_PASSWORD=${{ secrets.PROD_POSTGRES_PASSWORD }}

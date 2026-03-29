@@ -65,8 +65,9 @@ export default function AuthCallback() {
             verifyBody.email = email;
           }
           
+          const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
           const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
-          const response = await fetch('http://91.98.125.157:8000/auth/v1/verify', {
+          const response = await fetch(`${supabaseUrl}/auth/v1/verify`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
