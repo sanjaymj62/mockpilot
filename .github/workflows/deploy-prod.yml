@@ -63,6 +63,11 @@ jobs:
             corepack enable
             corepack prepare pnpm@10 --activate
             pnpm install --frozen-lockfile
+            export NEXT_PUBLIC_SUPABASE_URL="http://kong:8000"
+            export NEXT_PUBLIC_SUPABASE_ANON_KEY="$PROD_ANON_KEY"
+            export NEXT_PUBLIC_BACKEND_URL="/"
+            export NEXT_PUBLIC_DODO_PRODUCT_TEAM="$PROD_DODO_PRODUCT_TEAM"
+            export NEXT_PUBLIC_DODO_PRODUCT_PRO="$PROD_DODO_PRODUCT_PRO"
             pnpm build
 
       - name: Deploy to prod server

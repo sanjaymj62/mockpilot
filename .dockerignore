@@ -1,0 +1,10 @@
+node_modules
+apps/web/.next
+apps/web/node_modules
+apps/cli/node_modules
+packages/core/node_modules
+packages/cli/node_modules
+.git
+.github
+.idea
+*.md
