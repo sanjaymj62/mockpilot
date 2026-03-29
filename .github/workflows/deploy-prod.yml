@@ -12,67 +12,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 10
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Build packages
-        run: pnpm build
-        env:
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.PROD_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.PROD_ANON_KEY }}
-          NEXT_PUBLIC_BACKEND_URL: ${{ secrets.PROD_BACKEND_URL }}
-          NEXT_PUBLIC_DODO_PRODUCT_TEAM: ${{ secrets.PROD_DODO_PRODUCT_TEAM }}
-          NEXT_PUBLIC_DODO_PRODUCT_PRO: ${{ secrets.PROD_DODO_PRODUCT_PRO }}
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Build and push backend
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./apps/backend/Dockerfile
-          push: true
-          platforms: linux/amd64
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/mockpilot-backend:prod
-          no-cache: true
-
-      - name: Build and push web
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./apps/web/Dockerfile
-          push: true
-          platforms: linux/amd64
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/mockpilot-web:prod
-          no-cache: true
-
-      - name: Copy docker-compose to prod server
+      - name: Copy project to prod server
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.PROD_HOST }}
           username: ${{ secrets.PROD_SSH_USER }}
           key: ${{ secrets.PROD_SSH_KEY }}
           port: ${{ secrets.PROD_SSH_PORT }}
-          source: "docker-compose.prod.yml,kong.yml,init/,supabase/migrations/"
+          source: "."
           target: "~/mockpilot"
+          exclude: ".git,.github,node_modules,.next,apps/backend/dist,apps/web/.next,packages/core/dist,*.log"
 
       - name: Create prod .env file on server
         uses: appleboy/ssh-action@v1.0.0
@@ -84,7 +33,6 @@ jobs:
           script: |
             cd ~/mockpilot
             cat > .env <<EOF
-            DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
             PROD_POSTGRES_PASSWORD=${{ secrets.PROD_POSTGRES_PASSWORD }}
             PROD_POSTGRES_DB=postgres
             PROD_JWT_SECRET=${{ secrets.PROD_JWT_SECRET }}
@@ -103,6 +51,20 @@ jobs:
             PROD_DODO_PRODUCT_TEAM=${{ secrets.PROD_DODO_PRODUCT_TEAM }}
             EOF
 
+      - name: Install pnpm and build on server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_SSH_USER }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          port: ${{ secrets.PROD_SSH_PORT }}
+          script: |
+            cd ~/mockpilot
+            corepack enable
+            corepack prepare pnpm@10 --activate
+            pnpm install --frozen-lockfile
+            pnpm build
+
       - name: Deploy to prod server
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -112,9 +74,8 @@ jobs:
           port: ${{ secrets.PROD_SSH_PORT }}
           script: |
             cd ~/mockpilot
-            docker-compose -f docker-compose.prod.yml pull
-            docker-compose -f docker-compose.prod.yml up -d --force-recreate
-            sleep 10
+            docker-compose -f docker-compose.prod.yml build
+            docker-compose -f docker-compose.prod.yml up -d
 
       - name: Run database migrations
         uses: appleboy/ssh-action@v1.0.0

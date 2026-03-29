@@ -119,9 +119,9 @@ services:
     restart: unless-stopped
 
   backend:
-    image: ${DOCKERHUB_USERNAME}/mockpilot-backend:staging
-    platform: linux/amd64
-    pull_policy: always
+    build:
+      context: .
+      dockerfile: ./apps/backend/Dockerfile
     container_name: mockpilot-staging-backend
     environment:
       NODE_ENV: production
@@ -143,9 +143,9 @@ services:
     restart: unless-stopped
 
   web:
-    image: ${DOCKERHUB_USERNAME}/mockpilot-web:staging
-    platform: linux/amd64
-    pull_policy: always
+    build:
+      context: .
+      dockerfile: ./apps/web/Dockerfile
     container_name: mockpilot-staging-web
     environment:
       NODE_ENV: production
