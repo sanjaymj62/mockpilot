@@ -83,8 +83,8 @@ jobs:
           port: ${{ secrets.STAGING_SSH_PORT }}
           script: |
             cd ~/mockpilot
-            docker-compose -f docker-compose.staging.yml build
-            docker-compose -f docker-compose.staging.yml up -d
+            docker compose -f docker-compose.staging.yml build
+            docker compose -f docker-compose.staging.yml up -d
 
       - name: Run database migrations
         uses: appleboy/ssh-action@v1.0.0
