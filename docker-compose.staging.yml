@@ -55,6 +55,7 @@ services:
       GOTRUE_JWT_SECRET: ${STAGING_JWT_SECRET}
       GOTRUE_EXTERNAL_EMAIL_ENABLED: 'true'
       GOTRUE_MAILER_AUTOCONFIRM: 'false'
+      GOTRUE_SMTP_ENABLED: 'true'
       GOTRUE_SMTP_HOST: smtp.resend.com
       GOTRUE_SMTP_PORT: 587
       GOTRUE_SMTP_USER: resend
