@@ -149,7 +149,7 @@ services:
     environment:
       NODE_ENV: production
       NEXT_PUBLIC_BACKEND_URL: https://mockpilot.dev
-      NEXT_PUBLIC_SUPABASE_URL: http://kong:8000
+      NEXT_PUBLIC_SUPABASE_URL: https://mockpilot.dev
       NEXT_PUBLIC_SUPABASE_ANON_KEY: ${PROD_ANON_KEY}
       NEXT_PUBLIC_DODO_PRODUCT_TEAM: ${PROD_DODO_PRODUCT_TEAM}
       NEXT_PUBLIC_DODO_PRODUCT_PRO: ${PROD_DODO_PRODUCT_PRO}

@@ -33,7 +33,7 @@ jobs:
           script: |
             cd ~/mockpilot
             cat > .env <<EOF
-            NEXT_PUBLIC_SUPABASE_URL=http://kong:8000
+            NEXT_PUBLIC_SUPABASE_URL=https://mockpilot.dev
             NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.PROD_ANON_KEY }}
             NEXT_PUBLIC_BACKEND_URL=https://mockpilot.dev
             NEXT_PUBLIC_DODO_PRODUCT_TEAM=${{ secrets.PROD_DODO_PRODUCT_TEAM }}
