@@ -8,16 +8,6 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp" SCHEMA extensions;
 CREATE EXTENSION IF NOT EXISTS "pgcrypto" SCHEMA extensions;
 CREATE EXTENSION IF NOT EXISTS "pgjwt" SCHEMA extensions;
 
--- Grant usage
-GRANT USAGE ON SCHEMA auth TO postgres, anon, authenticated, service_role;
-GRANT USAGE ON SCHEMA storage TO postgres, anon, authenticated, service_role;
-GRANT USAGE ON SCHEMA extensions TO postgres, anon, authenticated, service_role;
-
--- Grant all on schemas
-GRANT ALL ON SCHEMA auth TO postgres, service_role;
-GRANT ALL ON SCHEMA storage TO postgres, service_role;
-GRANT ALL ON SCHEMA extensions TO postgres, service_role;
-
 -- Create roles if they don't exist
 DO $$
 BEGIN
@@ -32,3 +22,13 @@ BEGIN
   END IF;
 END
 $$;
+
+-- Grant usage
+GRANT USAGE ON SCHEMA auth TO postgres, anon, authenticated, service_role;
+GRANT USAGE ON SCHEMA storage TO postgres, anon, authenticated, service_role;
+GRANT USAGE ON SCHEMA extensions TO postgres, anon, authenticated, service_role;
+
+-- Grant all on schemas
+GRANT ALL ON SCHEMA auth TO postgres, service_role;
+GRANT ALL ON SCHEMA storage TO postgres, service_role;
+GRANT ALL ON SCHEMA extensions TO postgres, service_role;
