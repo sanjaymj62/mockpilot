@@ -1,41 +1,13 @@
 'use client';
 
 import Link from 'next/link';
+import { AppHeader } from '@/components/AppHeader';
 
 const styles = {
   container: {
     minHeight: '100vh',
     background: '#0a0a0a',
     color: '#f3f4f6',
-  },
-  header: {
-    borderBottom: '1px solid #1f2937',
-    background: '#111',
-  },
-  nav: {
-    maxWidth: '1200px',
-    margin: '0 auto',
-    padding: '1.5rem 2rem',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  logo: {
-    fontSize: '1.5rem',
-    fontWeight: 'bold' as const,
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-  },
-  navLinks: {
-    display: 'flex',
-    gap: '2rem',
-    alignItems: 'center',
-  },
-  navLink: {
-    color: '#9ca3af',
-    textDecoration: 'none',
-    transition: 'color 0.2s',
   },
   hero: {
     maxWidth: '1200px',
@@ -196,53 +168,7 @@ const styles = {
 export default function LandingPage() {
   return (
     <div style={styles.container}>
-      {/* Header */}
-      <header style={styles.header}>
-        <nav style={styles.nav}>
-          <div style={styles.logo}>MockPilot</div>
-          <div style={styles.navLinks}>
-            <a 
-              href="#features" 
-              style={styles.navLink}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#f3f4f6')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = '#9ca3af')}
-            >
-              Features
-            </a>
-            <a 
-              href="#pricing" 
-              style={styles.navLink}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#f3f4f6')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = '#9ca3af')}
-            >
-              Pricing
-            </a>
-            <Link 
-              href="/auth/login"
-              style={styles.navLink}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#f3f4f6')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = '#9ca3af')}
-            >
-              Login
-            </Link>
-            <Link 
-              href="/auth/register"
-              style={{
-                padding: '0.5rem 1.5rem',
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                borderRadius: '0.5rem',
-                color: 'white',
-                textDecoration: 'none',
-                transition: 'opacity 0.2s',
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.9')}
-              onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
-            >
-              Sign Up
-            </Link>
-          </div>
-        </nav>
-      </header>
+      <AppHeader variant="landing" />
 
       {/* Hero */}
       <section style={styles.hero}>

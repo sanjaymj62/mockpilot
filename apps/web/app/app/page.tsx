@@ -7,7 +7,7 @@ import http from 'react-syntax-highlighter/dist/esm/languages/hljs/http';
 import { GenerateResponse } from '@/types/schema';
 import { checkUsageLimit, incrementUsageCount, getUsageStats } from '@/lib/usage-tracking';
 import { supabase } from '@/lib/supabase';
-import Link from 'next/link';
+import { AppHeader } from '@/components/AppHeader';
 import { useRouter } from 'next/navigation';
 
 SyntaxHighlighter.registerLanguage('http', http);
@@ -73,21 +73,6 @@ const styles = {
     flexDirection: 'column' as const,
     background: '#111827',
     color: '#f3f4f6',
-  },
-  header: {
-    background: '#1f2937',
-    borderBottom: '1px solid #374151',
-    padding: '1rem 1.5rem',
-  },
-  title: {
-    fontSize: '1.5rem',
-    fontWeight: 'bold' as const,
-    margin: 0,
-  },
-  subtitle: {
-    color: '#9ca3af',
-    fontSize: '0.875rem',
-    margin: '0.25rem 0 0 0',
   },
   main: {
     flex: 1,
@@ -304,84 +289,24 @@ export default function Home() {
 
   return (
     <div style={styles.container}>
-      <header style={styles.header}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
-            <Link href="/" style={{ textDecoration: 'none' }}>
-              <h1 style={styles.title}>MockPilot</h1>
-            </Link>
-            {user && (
-              <nav style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
-                <Link 
-                  href="/app"
-                  style={{
-                    color: '#f3f4f6',
-                    textDecoration: 'none',
-                    fontSize: '0.875rem',
-                    fontWeight: '500',
-                  }}
-                >
-                  Generator
-                </Link>
-                <Link 
-                  href="/plans"
-                  style={{
-                    color: '#9ca3af',
-                    textDecoration: 'none',
-                    fontSize: '0.875rem',
-                    transition: 'color 0.2s',
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = '#f3f4f6')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = '#9ca3af')}
-                >
-                  Plans
-                </Link>
-                <Link 
-                  href="/profile"
-                  style={{
-                    color: '#9ca3af',
-                    textDecoration: 'none',
-                    fontSize: '0.875rem',
-                    transition: 'color 0.2s',
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = '#f3f4f6')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = '#9ca3af')}
-                >
-                  Profile
-                </Link>
-                <button
-                  onClick={handleSignOut}
-                  style={{
-                    padding: '0.5rem 1rem',
-                    background: 'transparent',
-                    border: '1px solid #374151',
-                    borderRadius: '0.375rem',
-                    color: '#9ca3af',
-                    fontSize: '0.875rem',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = '#667eea';
-                    e.currentTarget.style.color = '#f3f4f6';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = '#374151';
-                    e.currentTarget.style.color = '#9ca3af';
-                  }}
-                >
-                  Sign Out
-                </button>
-              </nav>
-            )}
-          </div>
-          <div style={{
-            padding: '0.5rem 1rem',
-            background: usageRemaining > 0 ? '#1f2937' : '#991b1b',
-            borderRadius: '0.5rem',
-            border: '1px solid',
-            borderColor: usageRemaining > 0 ? '#374151' : '#dc2626',
-          }}>
+      <AppHeader
+        variant="authenticated"
+        activePage="generator"
+        onSignOut={handleSignOut}
+        logoHref="/"
+        showNavigation={Boolean(user)}
+        layout="inline"
+        subtitle="OpenAPI/Swagger to HTTP File Generator"
+        rightContent={
+          <div
+            style={{
+              padding: '0.5rem 1rem',
+              background: usageRemaining > 0 ? '#1f2937' : '#991b1b',
+              borderRadius: '0.5rem',
+              border: '1px solid',
+              borderColor: usageRemaining > 0 ? '#374151' : '#dc2626',
+            }}
+          >
             <div style={{ fontSize: '0.75rem', color: '#9ca3af' }}>
               {user ? 'Unlimited' : 'Free generations'}
             </div>
@@ -389,9 +314,8 @@ export default function Home() {
               {user ? '∞' : `${usageRemaining} / 3 remaining`}
             </div>
           </div>
-        </div>
-        <p style={styles.subtitle}>OpenAPI/Swagger to HTTP File Generator</p>
-      </header>
+        }
+      />
 
       <main style={styles.main}>
         <div style={{ ...styles.panel, borderRight: '1px solid #374151' }}>

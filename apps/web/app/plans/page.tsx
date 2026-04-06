@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
-import Link from 'next/link';
+import { AppHeader } from '@/components/AppHeader';
 import { useRouter } from 'next/navigation';
 
 const styles = {
@@ -10,23 +10,6 @@ const styles = {
     minHeight: '100vh',
     background: '#0a0a0a',
     color: '#f3f4f6',
-  },
-  header: {
-    borderBottom: '1px solid #1f2937',
-    padding: '1.5rem 2rem',
-    background: '#111',
-  },
-  nav: {
-    display: 'flex',
-    gap: '1.5rem',
-    alignItems: 'center',
-    marginTop: '1rem',
-  },
-  navLink: {
-    color: '#9ca3af',
-    textDecoration: 'none',
-    fontSize: '0.875rem',
-    transition: 'color 0.2s',
   },
   main: {
     maxWidth: '1200px',
@@ -222,49 +205,12 @@ export default function PlansPage() {
 
   return (
     <div style={styles.container}>
-      <header style={styles.header}>
-        <Link href="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-          <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: 0 }}>MockPilot</h1>
-        </Link>
-        <nav style={styles.nav}>
-          <Link 
-            href="/app"
-            style={styles.navLink}
-            onMouseEnter={(e) => (e.currentTarget.style.color = '#f3f4f6')}
-            onMouseLeave={(e) => (e.currentTarget.style.color = '#9ca3af')}
-          >
-            Generator
-          </Link>
-          <Link 
-            href="/plans"
-            style={{ ...styles.navLink, color: '#f3f4f6' }}
-          >
-            Plans
-          </Link>
-          <Link 
-            href="/profile"
-            style={styles.navLink}
-            onMouseEnter={(e) => (e.currentTarget.style.color = '#f3f4f6')}
-            onMouseLeave={(e) => (e.currentTarget.style.color = '#9ca3af')}
-          >
-            Profile
-          </Link>
-          <button
-            onClick={handleSignOut}
-            style={{
-              padding: '0.5rem 1rem',
-              background: 'transparent',
-              border: '1px solid #374151',
-              borderRadius: '0.375rem',
-              color: '#9ca3af',
-              fontSize: '0.875rem',
-              cursor: 'pointer',
-            }}
-          >
-            Sign Out
-          </button>
-        </nav>
-      </header>
+      <AppHeader
+        variant="authenticated"
+        activePage="plans"
+        onSignOut={handleSignOut}
+        logoHref="/"
+      />
 
       <main style={styles.main}>
         <h1 style={styles.title}>Choose Your Plan</h1>
