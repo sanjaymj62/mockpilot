@@ -209,7 +209,7 @@ export default function PlansPage() {
         variant="authenticated"
         activePage="plans"
         onSignOut={handleSignOut}
-        logoHref="/"
+        logoHref="/app"
       />
 
       <main style={styles.main}>

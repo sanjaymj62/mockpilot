@@ -293,10 +293,8 @@ export default function Home() {
         variant="authenticated"
         activePage="generator"
         onSignOut={handleSignOut}
-        logoHref="/"
+        logoHref="/app"
         showNavigation={Boolean(user)}
-        layout="inline"
-        subtitle="OpenAPI/Swagger to HTTP File Generator"
         rightContent={
           <div
             style={{

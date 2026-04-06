@@ -334,7 +334,7 @@ export default function ProfilePage() {
         variant="authenticated"
         activePage="profile"
         onSignOut={handleSignOut}
-        logoHref="/"
+        logoHref="/app"
       />
 
       <main style={styles.main}>
