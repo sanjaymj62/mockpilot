@@ -44,7 +44,7 @@ DECLARE
   token TEXT;
 BEGIN
   -- Generate a random token (64 characters)
-  token := encode(gen_random_bytes(32), 'hex');
+  token := replace(gen_random_uuid()::text, '-', '') || replace(gen_random_uuid()::text, '-', '');
   
   -- Insert token
   INSERT INTO api_tokens (user_id, token)
