@@ -4,6 +4,7 @@ import { useState, useRef, ChangeEvent, useEffect } from 'react';
 import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { atomOneDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import http from 'react-syntax-highlighter/dist/esm/languages/hljs/http';
+import type { User } from '@supabase/supabase-js';
 import { GenerateResponse } from '@/types/schema';
 import { checkUsageLimit, incrementUsageCount, getUsageStats } from '@/lib/usage-tracking';
 import { supabase } from '@/lib/supabase';
@@ -180,7 +181,7 @@ export default function Home() {
   const [error, setError] = useState('');
   const [usageRemaining, setUsageRemaining] = useState<number>(3);
   const [showLimitModal, setShowLimitModal] = useState(false);
-  const [user, setUser] = useState<any>(null);
+  const [currentUser, setCurrentUser] = useState<User | null | undefined>(undefined);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -190,11 +191,12 @@ export default function Home() {
 
   const checkUser = async () => {
     const { data: { user } } = await supabase.auth.getUser();
-    setUser(user);
+    setCurrentUser(user);
   };
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
+    setCurrentUser(null);
     router.push('/');
   };
 
@@ -294,7 +296,7 @@ export default function Home() {
         activePage="generator"
         onSignOut={handleSignOut}
         logoHref="/app"
-        showNavigation={Boolean(user)}
+        showNavigation={currentUser !== null}
         rightContent={
           <div
             style={{
@@ -306,10 +308,10 @@ export default function Home() {
             }}
           >
             <div style={{ fontSize: '0.75rem', color: '#9ca3af' }}>
-              {user ? 'Unlimited' : 'Free generations'}
+              {currentUser ? 'Unlimited' : 'Free generations'}
             </div>
             <div style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>
-              {user ? '∞' : `${usageRemaining} / 3 remaining`}
+              {currentUser ? '∞' : `${usageRemaining} / 3 remaining`}
             </div>
           </div>
         }

@@ -29,15 +29,32 @@ const styles = {
     fontSize: '1.5rem',
     fontWeight: 'bold' as const,
     marginBottom: 0,
+    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
   },
   stackedWrap: {
     padding: '1.5rem 2rem',
   },
+  landingRow: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   stackedNav: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginTop: '1rem',
+  },
+  navLinks: {
     display: 'flex',
     gap: '1.5rem',
     alignItems: 'center',
-    marginTop: '1rem',
+  },
+  navActions: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.75rem',
   },
   navLink: {
     color: '#9ca3af',
@@ -88,28 +105,30 @@ export function AppHeader(props: AppHeaderProps) {
     return (
       <header style={styles.baseHeader}>
         <div style={styles.stackedWrap}>
-          <Link href={logoHref} style={{ textDecoration: 'none', color: 'inherit' }}>
-            <h1 style={styles.logo}>MockPilot</h1>
-          </Link>
-          <nav style={styles.stackedNav}>
-            <a href="#features" style={styles.navLink} {...hoverNavLink}>
-              Features
-            </a>
-            <a href="#pricing" style={styles.navLink} {...hoverNavLink}>
-              Pricing
-            </a>
-            <Link href="/auth/login" style={styles.navLink} {...hoverNavLink}>
-              Login
+          <div style={styles.landingRow}>
+            <Link href={logoHref} style={{ textDecoration: 'none', color: 'inherit' }}>
+              <h1 style={styles.logo}>MockPilot</h1>
             </Link>
-            <Link
-              href="/auth/register"
-              style={styles.authButton}
-              onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.9')}
-              onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
-            >
+            <nav style={{ ...styles.stackedNav, marginTop: 0 }}>
+              <a href="#features" style={styles.navLink} {...hoverNavLink}>
+                Features
+              </a>
+              <a href="#pricing" style={styles.navLink} {...hoverNavLink}>
+                Pricing
+              </a>
+              <Link href="/auth/login" style={styles.navLink} {...hoverNavLink}>
+                Login
+              </Link>
+              <Link
+                href="/auth/register"
+                style={styles.authButton}
+                onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.9')}
+                onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
+              >
                 Sign Up
               </Link>
-          </nav>
+            </nav>
+          </div>
         </div>
       </header>
     );
@@ -125,42 +144,46 @@ export function AppHeader(props: AppHeaderProps) {
         </Link>
         {showNavigation && (
           <nav style={styles.stackedNav}>
-            <Link
-              href="/app"
-              style={authLinkStyle(props.activePage === 'generator')}
-              {...(props.activePage === 'generator' ? {} : hoverNavLink)}
-            >
-              Generator
-            </Link>
-            <Link
-              href="/plans"
-              style={authLinkStyle(props.activePage === 'plans')}
-              {...(props.activePage === 'plans' ? {} : hoverNavLink)}
-            >
-              Plans
-            </Link>
-            <Link
-              href="/profile"
-              style={authLinkStyle(props.activePage === 'profile')}
-              {...(props.activePage === 'profile' ? {} : hoverNavLink)}
-            >
-              Profile
-            </Link>
-            <button
-              onClick={props.onSignOut}
-              style={styles.signOutButton}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = '#667eea';
-                e.currentTarget.style.color = '#f3f4f6';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = '#374151';
-                e.currentTarget.style.color = '#9ca3af';
-              }}
-            >
-              Sign Out
-            </button>
-            {props.rightContent && <div style={{ marginLeft: 'auto' }}>{props.rightContent}</div>}
+            <div style={styles.navLinks}>
+              <Link
+                href="/app"
+                style={authLinkStyle(props.activePage === 'generator')}
+                {...(props.activePage === 'generator' ? {} : hoverNavLink)}
+              >
+                Generator
+              </Link>
+              <Link
+                href="/plans"
+                style={authLinkStyle(props.activePage === 'plans')}
+                {...(props.activePage === 'plans' ? {} : hoverNavLink)}
+              >
+                Plans
+              </Link>
+              <Link
+                href="/profile"
+                style={authLinkStyle(props.activePage === 'profile')}
+                {...(props.activePage === 'profile' ? {} : hoverNavLink)}
+              >
+                Profile
+              </Link>
+            </div>
+            <div style={styles.navActions}>
+              {props.rightContent}
+              <button
+                onClick={props.onSignOut}
+                style={styles.signOutButton}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = '#667eea';
+                  e.currentTarget.style.color = '#f3f4f6';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = '#374151';
+                  e.currentTarget.style.color = '#9ca3af';
+                }}
+              >
+                Sign Out
+              </button>
+            </div>
           </nav>
         )}
       </div>
