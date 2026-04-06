@@ -1,14 +1,25 @@
 {
   "name": "@mockpilot/core",
   "version": "0.1.0",
+  "private": false,
+  "description": "Core OpenAPI to HTTP generation library for MockPilot",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sanjaymj62/mockpilot.git"
+  },
+  "homepage": "https://github.com/sanjaymj62/mockpilot#readme",
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch"
   },
   "dependencies": {
-    "@faker-js/faker": "^10.3.0"
+    "@faker-js/faker": "^9.9.0"
   },
   "devDependencies": {
     "@types/node": "^20",
