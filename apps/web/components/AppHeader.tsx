@@ -62,6 +62,22 @@ const styles = {
     fontSize: '0.875rem',
     transition: 'color 0.2s',
   },
+  navButton: {
+    padding: '0.5rem 1rem',
+    background: '#1f2937',
+    border: '1px solid #374151',
+    borderRadius: '0.5rem',
+    color: '#9ca3af',
+    textDecoration: 'none',
+    fontSize: '0.875rem',
+    transition: 'all 0.2s',
+    cursor: 'pointer',
+  },
+  navButtonActive: {
+    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    border: 'none',
+    color: 'white',
+  },
   authButton: {
     padding: '0.5rem 1.5rem',
     background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -90,16 +106,36 @@ const hoverNavLink = {
   },
 };
 
+const hoverNavButton = {
+  onMouseEnter: (e: MouseEvent<HTMLAnchorElement>) => {
+    e.currentTarget.style.background = '#374151';
+    e.currentTarget.style.color = '#f3f4f6';
+  },
+  onMouseLeave: (e: MouseEvent<HTMLAnchorElement>) => {
+    e.currentTarget.style.background = '#1f2937';
+    e.currentTarget.style.color = '#9ca3af';
+  },
+};
+
+const hoverNavButtonActive = {
+  onMouseEnter: (e: MouseEvent<HTMLAnchorElement>) => {
+    e.currentTarget.style.opacity = '0.9';
+  },
+  onMouseLeave: (e: MouseEvent<HTMLAnchorElement>) => {
+    e.currentTarget.style.opacity = '1';
+  },
+};
+
 function authLinkStyle(active: boolean) {
   if (active) {
-    return { ...styles.navLink, color: '#f3f4f6' };
+    return { ...styles.navButton, ...styles.navButtonActive };
   }
 
-  return styles.navLink;
+  return styles.navButton;
 }
 
 export function AppHeader(props: AppHeaderProps) {
-  const logoHref = props.variant === 'authenticated' ? (props.logoHref ?? '/app') : (props.logoHref ?? '/');
+  const logoHref = props.variant === 'authenticated' ? (props.logoHref ?? '/') : (props.logoHref ?? '/');
 
   if (props.variant === 'landing') {
     return (
@@ -110,13 +146,13 @@ export function AppHeader(props: AppHeaderProps) {
               <h1 style={styles.logo}>MockPilot</h1>
             </Link>
             <nav style={{ ...styles.stackedNav, marginTop: 0 }}>
-              <a href="#features" style={styles.navLink} {...hoverNavLink}>
+              <Link href="#features" style={styles.navButton} {...hoverNavButton}>
                 Features
-              </a>
-              <a href="#pricing" style={styles.navLink} {...hoverNavLink}>
+              </Link>
+              <Link href="#pricing" style={styles.navButton} {...hoverNavButton}>
                 Pricing
-              </a>
-              <Link href="/auth/login" style={styles.navLink} {...hoverNavLink}>
+              </Link>
+              <Link href="/auth/login" style={styles.navButton} {...hoverNavButton}>
                 Login
               </Link>
               <Link
@@ -148,21 +184,21 @@ export function AppHeader(props: AppHeaderProps) {
               <Link
                 href="/app"
                 style={authLinkStyle(props.activePage === 'generator')}
-                {...(props.activePage === 'generator' ? {} : hoverNavLink)}
+                {...(props.activePage === 'generator' ? hoverNavButtonActive : hoverNavButton)}
               >
                 Generator
               </Link>
               <Link
                 href="/plans"
                 style={authLinkStyle(props.activePage === 'plans')}
-                {...(props.activePage === 'plans' ? {} : hoverNavLink)}
+                {...(props.activePage === 'plans' ? hoverNavButtonActive : hoverNavButton)}
               >
                 Plans
               </Link>
               <Link
                 href="/profile"
                 style={authLinkStyle(props.activePage === 'profile')}
-                {...(props.activePage === 'profile' ? {} : hoverNavLink)}
+                {...(props.activePage === 'profile' ? hoverNavButtonActive : hoverNavButton)}
               >
                 Profile
               </Link>
