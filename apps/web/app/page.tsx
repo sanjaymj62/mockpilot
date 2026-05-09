@@ -4,394 +4,117 @@ import Link from 'next/link';
 import { AppHeader } from '@/components/AppHeader';
 import { CookieConsent } from '@/components/CookieConsent';
 
-const styles = {
-  container: {
-    minHeight: '100vh',
-    background: '#0a0a0a',
-    color: '#f3f4f6',
-  },
-  hero: {
-    maxWidth: '1200px',
-    margin: '0 auto',
-    padding: '8rem 2rem',
-    textAlign: 'center' as const,
-  },
-  heroTitle: {
-    fontSize: '4rem',
-    fontWeight: 'bold' as const,
-    marginBottom: '1.5rem',
-    lineHeight: '1.2',
-  },
-  gradient: {
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-  },
-  heroSubtitle: {
-    fontSize: '1.5rem',
-    color: '#9ca3af',
-    marginBottom: '3rem',
-    lineHeight: '1.6',
-  },
-  ctaButton: {
-    padding: '1rem 3rem',
-    fontSize: '1.25rem',
-    fontWeight: 'bold' as const,
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    color: 'white',
-    border: 'none',
-    borderRadius: '0.75rem',
-    cursor: 'pointer',
-    transition: 'transform 0.2s, box-shadow 0.2s',
-    boxShadow: '0 10px 40px rgba(102, 126, 234, 0.3)',
-    textDecoration: 'none',
-    display: 'inline-block',
-  },
-  features: {
-    maxWidth: '1200px',
-    margin: '0 auto',
-    padding: '6rem 2rem',
-  },
-  sectionTitle: {
-    fontSize: '2.5rem',
-    fontWeight: 'bold' as const,
-    textAlign: 'center' as const,
-    marginBottom: '4rem',
-  },
-  featureGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(3, 1fr)',
-    gap: '2rem',
-  },
-  featureCard: {
-    padding: '2rem',
-    background: '#111',
-    border: '1px solid #1f2937',
-    borderRadius: '1rem',
-    transition: 'transform 0.2s, border-color 0.2s',
-  },
-  featureIcon: {
-    fontSize: '2.5rem',
-    marginBottom: '1rem',
-  },
-  featureTitle: {
-    fontSize: '1.25rem',
-    fontWeight: 'bold' as const,
-    marginBottom: '0.75rem',
-  },
-  featureDesc: {
-    color: '#9ca3af',
-    lineHeight: '1.6',
-  },
-  pricing: {
-    maxWidth: '1200px',
-    margin: '0 auto',
-    padding: '6rem 2rem',
-    background: '#0a0a0a',
-  },
-  pricingGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(3, 1fr)',
-    gap: '2rem',
-  },
-  pricingCard: {
-    padding: '2.5rem',
-    background: '#111',
-    border: '1px solid #1f2937',
-    borderRadius: '1rem',
-    position: 'relative' as const,
-  },
-  pricingCardPopular: {
-    border: '2px solid #667eea',
-    transform: 'scale(1.05)',
-  },
-  popularBadge: {
-    position: 'absolute' as const,
-    top: '-12px',
-    right: '20px',
-    padding: '0.25rem 1rem',
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    borderRadius: '1rem',
-    fontSize: '0.75rem',
-    fontWeight: 'bold' as const,
-  },
-  pricingTier: {
-    fontSize: '1rem',
-    color: '#9ca3af',
-    marginBottom: '0.5rem',
-  },
-  pricingPrice: {
-    fontSize: '3rem',
-    fontWeight: 'bold' as const,
-    marginBottom: '0.5rem',
-  },
-  pricingPeriod: {
-    color: '#9ca3af',
-    marginBottom: '2rem',
-  },
-  pricingFeatures: {
-    listStyle: 'none',
-    padding: 0,
-    marginBottom: '2rem',
-  },
-  pricingFeature: {
-    padding: '0.75rem 0',
-    color: '#d1d5db',
-    borderBottom: '1px solid #1f2937',
-  },
-  pricingButton: {
-    width: '100%',
-    padding: '1rem',
-    fontSize: '1rem',
-    fontWeight: 'bold' as const,
-    background: '#1f2937',
-    color: 'white',
-    border: '1px solid #374151',
-    borderRadius: '0.5rem',
-    cursor: 'pointer',
-    transition: 'background 0.2s',
-    textDecoration: 'none',
-    display: 'block',
-    textAlign: 'center' as const,
-  },
-  pricingButtonPrimary: {
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    border: 'none',
-  },
-  footer: {
-    borderTop: '1px solid #1f2937',
-    padding: '3rem 2rem',
-    textAlign: 'center' as const,
-    color: '#6b7280',
-  },
-};
-
 export default function LandingPage() {
   return (
-    <div style={styles.container}>
+    <div className="min-h-screen bg-[#0a0a0a] text-gray-100">
       <AppHeader variant="landing" />
 
       {/* Hero */}
-      <section style={styles.hero}>
-        <h1 style={styles.heroTitle}>
+      <section className="max-w-6xl mx-auto px-4 md:px-8 py-16 md:py-32 text-center">
+        <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
           10x Your Team's <br />
-          <span style={styles.gradient}>Development Productivity</span>
+          <span className="bg-gradient-to-r from-[#667eea] to-[#764ba2] bg-clip-text text-transparent">Development Productivity</span>
         </h1>
-        <p style={styles.heroSubtitle}>
+        <p className="text-lg md:text-xl text-gray-400 mb-8 leading-relaxed">
           Generate production-ready HTTP request files from OpenAPI specs<br />
           with realistic mock data in seconds, not hours.
         </p>
-        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', alignItems: 'center', marginBottom: '2rem' }}>
-          <Link href="/app" style={styles.ctaButton}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'translateY(-2px)';
-            e.currentTarget.style.boxShadow = '0 15px 50px rgba(102, 126, 234, 0.4)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'translateY(0)';
-            e.currentTarget.style.boxShadow = '0 10px 40px rgba(102, 126, 234, 0.3)';
-          }}
-        >
-          Try Now - No Registration Required
-        </Link>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+          <Link 
+            href="/app" 
+            className="px-8 py-4 text-xl font-bold bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all no-underline inline-block"
+          >
+            Try Now - No Registration Required
+          </Link>
         </div>
-        <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap', color: '#6b7280', fontSize: '0.875rem' }}>
-          <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <span style={{ color: '#10b981' }}>✓</span> No User Tracking
+        <div className="flex flex-wrap gap-6 justify-center text-sm text-gray-500">
+          <span className="flex items-center gap-2">
+            <span className="text-emerald-500">✓</span> No User Tracking
           </span>
-          <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <span style={{ color: '#10b981' }}>✓</span> No Analytics
+          <span className="flex items-center gap-2">
+            <span className="text-emerald-500">✓</span> No Analytics
           </span>
-          <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <span style={{ color: '#10b981' }}>✓</span> GDPR Compliant
+          <span className="flex items-center gap-2">
+            <span className="text-emerald-500">✓</span> GDPR Compliant
           </span>
-          <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <span style={{ color: '#10b981' }}>✓</span> Your Data Stays Private
+          <span className="flex items-center gap-2">
+            <span className="text-emerald-500">✓</span> Your Data Stays Private
           </span>
         </div>
       </section>
 
       {/* Features */}
-      <section id="features" style={styles.features}>
-        <h2 style={styles.sectionTitle}>Why Development Teams Choose MockPilot</h2>
-        <div style={styles.featureGrid}>
-          <div 
-            style={styles.featureCard}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-4px)';
-              e.currentTarget.style.borderColor = '#667eea';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.borderColor = '#1f2937';
-            }}
-          >
-            <div style={styles.featureIcon}>⚡</div>
-            <h3 style={styles.featureTitle}>Lightning Fast</h3>
-            <p style={styles.featureDesc}>
-              Generate complete HTTP request files in seconds. Stop wasting hours writing boilerplate API calls.
-            </p>
-          </div>
-
-          <div 
-            style={styles.featureCard}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-4px)';
-              e.currentTarget.style.borderColor = '#667eea';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.borderColor = '#1f2937';
-            }}
-          >
-            <div style={styles.featureIcon}>🎯</div>
-            <h3 style={styles.featureTitle}>Realistic Mock Data</h3>
-            <p style={styles.featureDesc}>
-              Powered by Faker.js, generate realistic test data that matches your API schema perfectly.
-            </p>
-          </div>
-
-          <div 
-            style={styles.featureCard}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-4px)';
-              e.currentTarget.style.borderColor = '#667eea';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.borderColor = '#1f2937';
-            }}
-          >
-            <div style={styles.featureIcon}>🔧</div>
-            <h3 style={styles.featureTitle}>VS Code Compatible</h3>
-            <p style={styles.featureDesc}>
-              Generated .http files work seamlessly with VS Code REST Client and other popular tools.
-            </p>
-          </div>
-
-          <div 
-            style={styles.featureCard}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-4px)';
-              e.currentTarget.style.borderColor = '#667eea';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.borderColor = '#1f2937';
-            }}
-          >
-            <div style={styles.featureIcon}>📦</div>
-            <h3 style={styles.featureTitle}>OpenAPI Support</h3>
-            <p style={styles.featureDesc}>
-              Supports OpenAPI 3.0 and Swagger 2.0 specifications out of the box.
-            </p>
-          </div>
-
-          <div 
-            style={styles.featureCard}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-4px)';
-              e.currentTarget.style.borderColor = '#667eea';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.borderColor = '#1f2937';
-            }}
-          >
-            <div style={styles.featureIcon}>🚀</div>
-            <h3 style={styles.featureTitle}>CLI for Teams</h3>
-            <p style={styles.featureDesc}>
-              Automate with our powerful CLI. Perfect for CI/CD pipelines and team workflows.
-            </p>
-          </div>
-
-          <div 
-            style={styles.featureCard}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-4px)';
-              e.currentTarget.style.borderColor = '#667eea';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.borderColor = '#1f2937';
-            }}
-          >
-            <div style={styles.featureIcon}>🤖</div>
-            <h3 style={styles.featureTitle}>AI-Powered Testing</h3>
-            <p style={styles.featureDesc}>
-              Professional tier includes AI-based context-aware test data generation for edge cases.
-            </p>
-          </div>
+      <section id="features" className="max-w-6xl mx-auto px-4 md:px-8 py-12 md:py-24">
+        <h2 className="text-3xl md:text-5xl font-bold text-center mb-8 md:mb-16">Why Development Teams Choose MockPilot</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {[
+            { icon: '⚡', title: 'Lightning Fast', desc: 'Generate complete HTTP request files in seconds. Stop wasting hours writing boilerplate API calls.' },
+            { icon: '🎯', title: 'Realistic Mock Data', desc: 'Powered by Faker.js, generate realistic test data that matches your API schema perfectly.' },
+            { icon: '🔧', title: 'VS Code Compatible', desc: 'Generated .http files work seamlessly with VS Code REST Client and other popular tools.' },
+            { icon: '📦', title: 'OpenAPI Support', desc: 'Supports OpenAPI 3.0 and Swagger 2.0 specifications out of the box.' },
+            { icon: '🚀', title: 'CLI for Teams', desc: 'Automate with our powerful CLI. Perfect for CI/CD pipelines and team workflows.' },
+            { icon: '🤖', title: 'AI-Powered Testing', desc: 'Professional tier includes AI-based context-aware test data generation for edge cases.' },
+          ].map((feature, i) => (
+            <div 
+              key={i}
+              className="p-8 bg-[#111] border border-gray-800 rounded-2xl hover:-translate-y-1 hover:border-[#667eea] transition-all cursor-pointer"
+            >
+              <div className="text-4xl mb-4">{feature.icon}</div>
+              <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
+              <p className="text-gray-400 leading-relaxed">{feature.desc}</p>
+            </div>
+          ))}
         </div>
       </section>
 
       {/* Pricing */}
-      <section id="pricing" style={styles.pricing}>
-        <h2 style={styles.sectionTitle}>Simple, Transparent Pricing</h2>
-        <div style={styles.pricingGrid}>
-          {/* Free Tier */}
-          <div style={styles.pricingCard}>
-            <div style={styles.pricingTier}>Free</div>
-            <div style={styles.pricingPrice}>$0</div>
-            <div style={styles.pricingPeriod}>Forever free</div>
-            <ul style={styles.pricingFeatures}>
-              <li style={styles.pricingFeature}>✓ Web-based generator</li>
-              <li style={styles.pricingFeature}>✓ 3 generations per session</li>
-              <li style={styles.pricingFeature}>✓ OpenAPI 3.0 & Swagger 2.0</li>
-              <li style={styles.pricingFeature}>✓ Realistic mock data</li>
-              <li style={styles.pricingFeature}>✓ VS Code compatible</li>
+      <section id="pricing" className="max-w-6xl mx-auto px-4 md:px-8 py-12 md:py-24 bg-[#0a0a0a]">
+        <h2 className="text-3xl md:text-5xl font-bold text-center mb-8 md:mb-16">Simple, Transparent Pricing</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Free */}
+          <div className="p-8 bg-[#111] border border-gray-800 rounded-2xl">
+            <div className="text-gray-400 mb-2">Free</div>
+            <div className="text-5xl font-bold mb-2">$0</div>
+            <div className="text-gray-400 mb-8">Forever free</div>
+            <ul className="space-y-3 mb-8">
+              {['Web-based generator', '3 generations per session', 'OpenAPI 3.0 & Swagger 2.0', 'Realistic mock data', 'VS Code compatible'].map((f, i) => (
+                <li key={i} className="text-gray-300 border-b border-gray-800 pb-3">✓ {f}</li>
+              ))}
             </ul>
-            <Link 
-              href="/app" 
-              style={styles.pricingButton}
-              onMouseEnter={(e) => (e.currentTarget.style.background = '#374151')}
-              onMouseLeave={(e) => (e.currentTarget.style.background = '#1f2937')}
-            >
+            <Link href="/app" className="block w-full py-4 bg-gray-800 border border-gray-700 rounded-lg text-center text-white hover:bg-gray-700 transition-colors no-underline">
               Try Now
             </Link>
           </div>
 
-          {/* Team Tier */}
-          <div style={{ ...styles.pricingCard, ...styles.pricingCardPopular }}>
-            <div style={styles.popularBadge}>MOST POPULAR</div>
-            <div style={styles.pricingTier}>Team</div>
-            <div style={styles.pricingPrice}>$29</div>
-            <div style={styles.pricingPeriod}>per user/month</div>
-            <ul style={styles.pricingFeatures}>
-              <li style={styles.pricingFeature}>✓ Everything in Free</li>
-              <li style={styles.pricingFeature}>✓ Unlimited generations</li>
-              <li style={styles.pricingFeature}>✓ CLI tool access</li>
-              <li style={styles.pricingFeature}>✓ CI/CD integration</li>
-              <li style={styles.pricingFeature}>✓ Priority support</li>
-              <li style={styles.pricingFeature}>✓ Team collaboration</li>
+          {/* Team */}
+          <div className="p-8 bg-[#111] border-2 border-[#667eea] rounded-2xl transform md:scale-105 relative">
+            <div className="absolute -top-3 right-5 px-4 py-1 bg-gradient-to-r from-[#667eea] to-[#764ba2] rounded-full text-xs font-bold">
+              MOST POPULAR
+            </div>
+            <div className="text-gray-400 mb-2">Team</div>
+            <div className="text-5xl font-bold mb-2">$29</div>
+            <div className="text-gray-400 mb-8">one-time</div>
+            <ul className="space-y-3 mb-8">
+              {['Everything in Free', 'Unlimited generations', 'CLI tool access', 'CI/CD integration', 'Priority support', 'Team collaboration'].map((f, i) => (
+                <li key={i} className="text-gray-300 border-b border-gray-800 pb-3">✓ {f}</li>
+              ))}
             </ul>
-            <button
-              style={{ ...styles.pricingButton, ...styles.pricingButtonPrimary }}
-              onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.9')}
-              onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
-            >
+            <button className="w-full py-4 bg-gradient-to-r from-[#667eea] to-[#764ba2] rounded-lg text-white font-bold hover:opacity-90 transition-opacity">
               Get Started
             </button>
           </div>
 
-          {/* Professional Tier */}
-          <div style={styles.pricingCard}>
-            <div style={styles.pricingTier}>Professional</div>
-            <div style={styles.pricingPrice}>$99</div>
-            <div style={styles.pricingPeriod}>per user/month</div>
-            <ul style={styles.pricingFeatures}>
-              <li style={styles.pricingFeature}>✓ Everything in Team</li>
-              <li style={styles.pricingFeature}>✓ AI-powered test data</li>
-              <li style={styles.pricingFeature}>✓ Context-aware generation</li>
-              <li style={styles.pricingFeature}>✓ Edge case detection</li>
-              <li style={styles.pricingFeature}>✓ Custom data patterns</li>
-              <li style={styles.pricingFeature}>✓ Dedicated support</li>
+          {/* Pro */}
+          <div className="p-8 bg-[#111] border border-gray-800 rounded-2xl">
+            <div className="text-gray-400 mb-2">Professional</div>
+            <div className="text-5xl font-bold mb-2">$99</div>
+            <div className="text-gray-400 mb-8">one-time</div>
+            <ul className="space-y-3 mb-8">
+              {['Everything in Team', 'AI-powered test data', 'Context-aware generation', 'Edge case detection', 'Custom data patterns', 'Dedicated support'].map((f, i) => (
+                <li key={i} className="text-gray-300 border-b border-gray-800 pb-3">✓ {f}</li>
+              ))}
             </ul>
-            <button
-              style={styles.pricingButton}
-              onMouseEnter={(e) => (e.currentTarget.style.background = '#374151')}
-              onMouseLeave={(e) => (e.currentTarget.style.background = '#1f2937')}
-            >
+            <button className="w-full py-4 bg-gray-800 border border-gray-700 rounded-lg text-white hover:bg-gray-700 transition-colors">
               Contact Sales
             </button>
           </div>
@@ -399,16 +122,17 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer style={styles.footer}>
+      <footer className="border-t border-gray-800 py-12 text-center text-gray-500">
         <p>© 2026 MockPilot. Open source and built with ❤️ for developers.</p>
-        <p style={{ marginTop: '1rem' }}>
-          <Link href="/legal/disclaimer" style={{ color: '#9ca3af', marginRight: '2rem', textDecoration: 'none' }}>Disclaimer</Link>
-          <Link href="/legal/faq" style={{ color: '#9ca3af', marginRight: '2rem', textDecoration: 'none' }}>FAQ</Link>
-          <Link href="/legal/privacy" style={{ color: '#9ca3af', marginRight: '2rem', textDecoration: 'none' }}>Privacy</Link>
-          <Link href="/legal/terms" style={{ color: '#9ca3af', textDecoration: 'none' }}>Terms</Link>
-        </p>
-</footer>
-        <CookieConsent />
-      </div>
-    );
-  }
+        <div className="mt-4 flex flex-wrap justify-center gap-6">
+          <Link href="/legal/disclaimer" className="text-gray-400 hover:text-gray-300 no-underline">Disclaimer</Link>
+          <Link href="/legal/faq" className="text-gray-400 hover:text-gray-300 no-underline">FAQ</Link>
+          <Link href="/legal/privacy" className="text-gray-400 hover:text-gray-300 no-underline">Privacy</Link>
+          <Link href="/legal/terms" className="text-gray-400 hover:text-gray-300 no-underline">Terms</Link>
+        </div>
+      </footer>
+
+      <CookieConsent />
+    </div>
+  );
+}

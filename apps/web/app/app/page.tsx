@@ -67,112 +67,6 @@ components:
         isActive:
           type: boolean`;
 
-const styles = {
-  container: {
-    minHeight: '100vh',
-    display: 'flex',
-    flexDirection: 'column' as const,
-    background: '#111827',
-    color: '#f3f4f6',
-  },
-  main: {
-    flex: 1,
-    display: 'flex',
-    overflow: 'hidden',
-  },
-  panel: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column' as const,
-  },
-  panelHeader: {
-    background: '#1f2937',
-    borderBottom: '1px solid #374151',
-    padding: '0.75rem 1rem',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  panelTitle: {
-    fontWeight: '600' as const,
-    margin: 0,
-  },
-  buttonGroup: {
-    display: 'flex',
-    gap: '0.5rem',
-  },
-  button: {
-    padding: '0.25rem 0.75rem',
-    fontSize: '0.875rem',
-    background: '#374151',
-    color: '#f3f4f6',
-    border: 'none',
-    borderRadius: '0.375rem',
-    cursor: 'pointer',
-    transition: 'background-color 0.2s',
-  },
-  buttonPrimary: {
-    background: '#2563eb',
-  },
-  textarea: {
-    flex: 1,
-    padding: '1rem',
-    background: '#111827',
-    color: '#f3f4f6',
-    border: 'none',
-    outline: 'none',
-    resize: 'none' as const,
-    fontFamily: 'monospace',
-    fontSize: '0.875rem',
-  },
-  outputContainer: {
-    flex: 1,
-    overflow: 'auto',
-    background: '#111827',
-  },
-  placeholder: {
-    padding: '1rem',
-    color: '#6b7280',
-    fontFamily: 'monospace',
-    fontSize: '0.875rem',
-  },
-  footer: {
-    background: '#1f2937',
-    borderTop: '1px solid #374151',
-    padding: '1rem 1.5rem',
-  },
-  footerContent: {
-    display: 'flex',
-    flexDirection: 'column' as const,
-    alignItems: 'center',
-    gap: '0.75rem',
-  },
-  generateButton: {
-    padding: '0.75rem 2rem',
-    background: '#2563eb',
-    color: 'white',
-    border: 'none',
-    borderRadius: '0.5rem',
-    fontWeight: '600' as const,
-    cursor: 'pointer',
-    transition: 'background-color 0.2s',
-    fontSize: '1rem',
-  },
-  error: {
-    width: '100%',
-    maxWidth: '48rem',
-    padding: '0.75rem',
-    background: 'rgba(127, 29, 29, 0.5)',
-    border: '1px solid #b91c1c',
-    borderRadius: '0.375rem',
-    color: '#fecaca',
-    fontSize: '0.875rem',
-  },
-  hiddenInput: {
-    display: 'none',
-  },
-};
-
 export default function Home() {
   const router = useRouter();
   const [yamlInput, setYamlInput] = useState('');
@@ -223,7 +117,6 @@ export default function Home() {
   };
 
   const generateHttpRequests = async () => {
-    // Check usage limit first
     const usageCheck = await checkUsageLimit();
     
     if (!usageCheck.allowed) {
@@ -239,9 +132,7 @@ export default function Home() {
       const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
       const response = await fetch(`${backendUrl}/api/generate`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ yaml: yamlInput }),
       });
 
@@ -252,8 +143,6 @@ export default function Home() {
       }
 
       setHttpOutput(data.httpFile);
-      
-      // Increment usage count on success
       await incrementUsageCount();
       await loadUsageStats();
     } catch (err) {
@@ -289,8 +178,10 @@ export default function Home() {
     setError('');
   };
 
+  const isDisabled = !yamlInput || loading;
+
   return (
-    <div style={styles.container}>
+    <div className="min-h-screen flex flex-col bg-gray-900 text-gray-100">
       <AppHeader
         variant="authenticated"
         activePage="generator"
@@ -298,43 +189,31 @@ export default function Home() {
         logoHref="/app"
         showNavigation={currentUser !== null}
         rightContent={
-          <div
-            style={{
-              padding: '0.5rem 1rem',
-              background: usageRemaining > 0 ? '#1f2937' : '#991b1b',
-              borderRadius: '0.5rem',
-              border: '1px solid',
-              borderColor: usageRemaining > 0 ? '#374151' : '#dc2626',
-            }}
-          >
-            <div style={{ fontSize: '0.75rem', color: '#9ca3af' }}>
+          <div className={`px-4 py-2 rounded-lg border ${usageRemaining > 0 ? 'bg-gray-800 border-gray-700' : 'bg-red-900 border-red-700'}`}>
+            <div className="text-xs text-gray-400">
               {currentUser ? 'Unlimited' : 'Free generations'}
             </div>
-            <div style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>
+            <div className="text-xl font-bold">
               {currentUser ? '∞' : `${usageRemaining} / 3 remaining`}
             </div>
           </div>
         }
       />
 
-      <main style={styles.main}>
-        <div style={{ ...styles.panel, borderRight: '1px solid #374151' }}>
-          <div style={styles.panelHeader}>
-            <h2 style={styles.panelTitle}>OpenAPI/Swagger YAML</h2>
-            <div style={styles.buttonGroup}>
+      <main className="flex-1 flex overflow-hidden">
+        <div className="flex-1 flex flex-col border-r border-gray-700">
+          <div className="bg-gray-800 border-b border-gray-700 px-4 py-3 flex items-center justify-between">
+            <h2 className="font-semibold">OpenAPI/Swagger YAML</h2>
+            <div className="flex gap-2">
               <button
                 onClick={loadExample}
-                style={styles.button}
-                onMouseEnter={(e) => (e.currentTarget.style.background = '#4b5563')}
-                onMouseLeave={(e) => (e.currentTarget.style.background = '#374151')}
+                className="px-3 py-1.5 text-sm bg-gray-700 text-gray-200 rounded hover:bg-gray-600 transition-colors"
               >
                 Load Example
               </button>
               <button
                 onClick={() => fileInputRef.current?.click()}
-                style={styles.button}
-                onMouseEnter={(e) => (e.currentTarget.style.background = '#4b5563')}
-                onMouseLeave={(e) => (e.currentTarget.style.background = '#374151')}
+                className="px-3 py-1.5 text-sm bg-gray-700 text-gray-200 rounded hover:bg-gray-600 transition-colors"
               >
                 Upload File
               </button>
@@ -343,7 +222,7 @@ export default function Home() {
                 type="file"
                 accept=".yaml,.yml"
                 onChange={handleFileUpload}
-                style={styles.hiddenInput}
+                className="hidden"
               />
             </div>
           </div>
@@ -351,52 +230,43 @@ export default function Home() {
             value={yamlInput}
             onChange={(e) => setYamlInput(e.target.value)}
             placeholder="Paste your OpenAPI/Swagger YAML here or upload a file..."
-            style={styles.textarea}
+            className="flex-1 p-4 bg-gray-900 text-gray-100 border-none outline-none resize-none font-mono text-sm"
             spellCheck={false}
           />
         </div>
 
-        <div style={styles.panel}>
-          <div style={styles.panelHeader}>
-            <h2 style={styles.panelTitle}>Generated HTTP Requests</h2>
+        <div className="flex-1 flex flex-col">
+          <div className="bg-gray-800 border-b border-gray-700 px-4 py-3 flex items-center justify-between">
+            <h2 className="font-semibold">Generated HTTP Requests</h2>
             {httpOutput && (
-              <div style={styles.buttonGroup}>
+              <div className="flex gap-2">
                 <button
                   onClick={copyToClipboard}
-                  style={styles.button}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = '#4b5563')}
-                  onMouseLeave={(e) => (e.currentTarget.style.background = '#374151')}
+                  className="px-3 py-1.5 text-sm bg-gray-700 text-gray-200 rounded hover:bg-gray-600 transition-colors"
                 >
                   Copy
                 </button>
                 <button
                   onClick={downloadHttpFile}
-                  style={{ ...styles.button, ...styles.buttonPrimary }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = '#1d4ed8')}
-                  onMouseLeave={(e) => (e.currentTarget.style.background = '#2563eb')}
+                  className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
                 >
                   Download .http
                 </button>
               </div>
             )}
           </div>
-          <div style={styles.outputContainer}>
+          <div className="flex-1 overflow-auto bg-gray-900">
             {httpOutput ? (
               <SyntaxHighlighter
                 language="http"
                 style={atomOneDark}
-                customStyle={{
-                  margin: 0,
-                  padding: '1rem',
-                  background: 'transparent',
-                  fontSize: '0.875rem',
-                }}
+                customStyle={{ margin: 0, padding: '1rem', background: 'transparent', fontSize: '0.875rem' }}
                 wrapLongLines={true}
               >
                 {httpOutput}
               </SyntaxHighlighter>
             ) : (
-              <div style={styles.placeholder}>
+              <div className="p-4 text-gray-500 font-mono text-sm">
                 Generated HTTP requests will appear here...
               </div>
             )}
@@ -404,35 +274,22 @@ export default function Home() {
         </div>
       </main>
 
-      <footer style={styles.footer}>
-        <div style={styles.footerContent}>
+      <footer className="bg-gray-800 border-t border-gray-700 px-6 py-4">
+        <div className="flex flex-col items-center gap-3">
           <button
             onClick={generateHttpRequests}
-            disabled={!yamlInput || loading}
-            style={{
-              ...styles.generateButton,
-              ...((!yamlInput || loading) && {
-                background: '#4b5563',
-                cursor: 'not-allowed',
-              }),
-            }}
-            onMouseEnter={(e) => {
-              if (!yamlInput || loading) return;
-              e.currentTarget.style.background = '#1d4ed8';
-            }}
-            onMouseLeave={(e) => {
-              if (!yamlInput || loading) {
-                e.currentTarget.style.background = '#4b5563';
-              } else {
-                e.currentTarget.style.background = '#2563eb';
-              }
-            }}
+            disabled={isDisabled}
+            className={`px-8 py-3 rounded-lg font-semibold text-lg transition-colors ${
+              isDisabled 
+                ? 'bg-gray-600 cursor-not-allowed text-gray-300' 
+                : 'bg-blue-600 hover:bg-blue-700 text-white'
+            }`}
           >
             {loading ? 'Generating...' : 'Generate HTTP Requests'}
           </button>
           
           {error && (
-            <div style={styles.error}>
+            <div className="w-full max-w-2xl p-3 bg-red-900/50 border border-red-700 rounded text-red-200 text-sm">
               {error}
             </div>
           )}
@@ -441,53 +298,23 @@ export default function Home() {
 
       {/* Limit Reached Modal */}
       {showLimitModal && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'rgba(0, 0, 0, 0.75)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 1000,
-        }}>
-          <div style={{
-            background: '#1f2937',
-            border: '1px solid #374151',
-            borderRadius: '0.75rem',
-            padding: '2rem',
-            maxWidth: '28rem',
-            width: '90%',
-          }}>
-            <h2 style={{ marginTop: 0, fontSize: '1.5rem' }}>Free Limit Reached</h2>
-            <p style={{ color: '#9ca3af', lineHeight: '1.6' }}>
+        <div className="fixed inset-0 bg-black/75 flex items-center justify-center z-50">
+          <div className="bg-gray-800 border border-gray-700 rounded-xl p-8 max-w-sm w-full mx-4">
+            <h2 className="text-2xl font-bold mb-4">Free Limit Reached</h2>
+            <p className="text-gray-400 mb-4">
               You've used all 3 free generations. To continue using MockPilot:
             </p>
-            <ul style={{ color: '#9ca3af', lineHeight: '1.8' }}>
-              <li>Clear your browser data to reset the counter</li>
-              <li>Star the project on GitHub ⭐ (much appreciated!)</li>
-              <li>Consider self-hosting for unlimited use</li>
+            <ul className="text-gray-400 space-y-2 mb-4">
+              <li>• Clear your browser data to reset the counter</li>
+              <li>• Star the project on GitHub ⭐ (much appreciated!)</li>
+              <li>• Consider self-hosting for unlimited use</li>
             </ul>
-            <p style={{ color: '#9ca3af', fontSize: '0.875rem', marginTop: '1rem' }}>
+            <p className="text-gray-500 text-sm mb-4">
               Note: The backend has rate limiting to prevent abuse.
             </p>
             <button
               onClick={() => setShowLimitModal(false)}
-              style={{
-                width: '100%',
-                padding: '0.75rem',
-                background: '#2563eb',
-                color: 'white',
-                border: 'none',
-                borderRadius: '0.5rem',
-                fontWeight: '600',
-                cursor: 'pointer',
-                fontSize: '1rem',
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = '#1d4ed8')}
-              onMouseLeave={(e) => (e.currentTarget.style.background = '#2563eb')}
+              className="w-full py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
             >
               Got it
             </button>
