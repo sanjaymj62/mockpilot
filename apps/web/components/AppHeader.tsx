@@ -54,9 +54,15 @@ const styles = {
   navActions: {
     display: 'flex',
     alignItems: 'center',
-    gap: '0.75rem',
+    gap: '1rem',
   },
   navLink: {
+    color: '#9ca3af',
+    textDecoration: 'none',
+    fontSize: '0.875rem',
+    transition: 'color 0.2s',
+  },
+  landingLink: {
     color: '#9ca3af',
     textDecoration: 'none',
     fontSize: '0.875rem',
@@ -106,6 +112,15 @@ const hoverNavLink = {
   },
 };
 
+const hoverLandingLink = {
+  onMouseEnter: (e: MouseEvent<HTMLAnchorElement>) => {
+    e.currentTarget.style.color = '#f3f4f6';
+  },
+  onMouseLeave: (e: MouseEvent<HTMLAnchorElement>) => {
+    e.currentTarget.style.color = '#9ca3af';
+  },
+};
+
 const hoverNavButton = {
   onMouseEnter: (e: MouseEvent<HTMLAnchorElement>) => {
     e.currentTarget.style.background = '#374151';
@@ -146,23 +161,25 @@ export function AppHeader(props: AppHeaderProps) {
               <h1 style={styles.logo}>MockPilot</h1>
             </Link>
             <nav style={{ ...styles.stackedNav, marginTop: 0 }}>
-              <Link href="#features" style={styles.navButton} {...hoverNavButton}>
+              <Link href="#features" style={styles.landingLink} {...hoverLandingLink}>
                 Features
               </Link>
-              <Link href="#pricing" style={styles.navButton} {...hoverNavButton}>
+              <Link href="#pricing" style={styles.landingLink} {...hoverLandingLink}>
                 Pricing
               </Link>
-              <Link href="/auth/login" style={styles.navButton} {...hoverNavButton}>
-                Login
-              </Link>
-              <Link
-                href="/auth/register"
-                style={styles.authButton}
-                onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.9')}
-                onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
-              >
-                Sign Up
-              </Link>
+              <div style={{ display: 'flex', gap: '0.75rem' }}>
+                <Link href="/auth/login" style={styles.navButton} {...hoverNavButton}>
+                  Login
+                </Link>
+                <Link
+                  href="/auth/register"
+                  style={styles.authButton}
+                  onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.9')}
+                  onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
+                >
+                  Sign Up
+                </Link>
+              </div>
             </nav>
           </div>
         </div>

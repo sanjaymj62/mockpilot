@@ -28,12 +28,13 @@ export default function PrivacyPage() {
 
         <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>Automatically Collected:</h3>
         <ul style={{ color: '#d1d5db', marginLeft: '1.5rem', lineHeight: '1.8' }}>
-          <li>IP address</li>
-          <li>Browser type and version</li>
-          <li>Device information</li>
-          <li>Usage statistics</li>
-          <li>Browser fingerprint (for session management)</li>
+          <li>Basic usage data (pages visited, features used) - <strong style={{ color: '#10b981' }}>no personal tracking</strong></li>
+          <li>Session data for authentication</li>
         </ul>
+        <p style={{ color: '#9ca3af', fontSize: '0.875rem', marginTop: '1rem', fontStyle: 'italic' }}>
+          ⚠️ We do NOT collect: IP addresses, browser fingerprints, device fingerprints, or any form of user tracking.
+          We value your privacy and employ data minimization principles.
+        </p>
       </section>
 
       <section style={{ marginBottom: '3rem' }}>
@@ -56,6 +57,23 @@ export default function PrivacyPage() {
         </h2>
         <p style={{ color: '#d1d5db', fontWeight: 'bold' }}>
           We do not sell your personal information to third parties.
+        </p>
+      </section>
+
+      <section style={{ marginBottom: '3rem', background: '#1f1f1f', padding: '1.5rem', borderRadius: '0.5rem', border: '2px solid #10b981' }}>
+        <h2 style={{ fontSize: '1.75rem', fontWeight: 'bold', marginBottom: '1rem', color: '#10b981' }}>
+          🔒 No Tracking Policy
+        </h2>
+        <ul style={{ color: '#d1d5db', lineHeight: '2' }}>
+          <li>✅ <strong>No Analytics:</strong> We do not use Google Analytics, Mixpanel, or any tracking tools</li>
+          <li>✅ <strong>No Ad Tracking:</strong> We do not serve ads or share data with advertising networks</li>
+          <li>✅ <strong>No User Profiling:</strong> We do not build profiles based on your behavior</li>
+          <li>✅ <strong>No Cross-Site Tracking:</strong> We do not track you across other websites</li>
+          <li>✅ <strong>No Browser Fingerprinting:</strong> We do not collect device fingerprints</li>
+          <li>✅ <strong>Data Minimization:</strong> We only collect what's absolutely necessary for the service</li>
+        </ul>
+        <p style={{ color: '#9ca3af', marginTop: '1rem' }}>
+          Your data is used only to provide the service you requested. Nothing more.
         </p>
       </section>
 

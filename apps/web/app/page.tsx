@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { AppHeader } from '@/components/AppHeader';
+import { CookieConsent } from '@/components/CookieConsent';
 
 const styles = {
   container: {
@@ -180,7 +181,8 @@ export default function LandingPage() {
           Generate production-ready HTTP request files from OpenAPI specs<br />
           with realistic mock data in seconds, not hours.
         </p>
-        <Link href="/app" style={styles.ctaButton}
+        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', alignItems: 'center', marginBottom: '2rem' }}>
+          <Link href="/app" style={styles.ctaButton}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = 'translateY(-2px)';
             e.currentTarget.style.boxShadow = '0 15px 50px rgba(102, 126, 234, 0.4)';
@@ -192,6 +194,21 @@ export default function LandingPage() {
         >
           Try Now - No Registration Required
         </Link>
+        </div>
+        <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap', color: '#6b7280', fontSize: '0.875rem' }}>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <span style={{ color: '#10b981' }}>✓</span> No User Tracking
+          </span>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <span style={{ color: '#10b981' }}>✓</span> No Analytics
+          </span>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <span style={{ color: '#10b981' }}>✓</span> GDPR Compliant
+          </span>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <span style={{ color: '#10b981' }}>✓</span> Your Data Stays Private
+          </span>
+        </div>
       </section>
 
       {/* Features */}
@@ -385,11 +402,13 @@ export default function LandingPage() {
       <footer style={styles.footer}>
         <p>© 2026 MockPilot. Open source and built with ❤️ for developers.</p>
         <p style={{ marginTop: '1rem' }}>
-          <a href="https://github.com" style={{ color: '#9ca3af', marginRight: '2rem', textDecoration: 'none' }}>GitHub</a>
-          <a href="#" style={{ color: '#9ca3af', marginRight: '2rem', textDecoration: 'none' }}>Documentation</a>
-          <a href="#" style={{ color: '#9ca3af', textDecoration: 'none' }}>Support</a>
+          <Link href="/legal/disclaimer" style={{ color: '#9ca3af', marginRight: '2rem', textDecoration: 'none' }}>Disclaimer</Link>
+          <Link href="/legal/faq" style={{ color: '#9ca3af', marginRight: '2rem', textDecoration: 'none' }}>FAQ</Link>
+          <Link href="/legal/privacy" style={{ color: '#9ca3af', marginRight: '2rem', textDecoration: 'none' }}>Privacy</Link>
+          <Link href="/legal/terms" style={{ color: '#9ca3af', textDecoration: 'none' }}>Terms</Link>
         </p>
-      </footer>
-    </div>
-  );
-}
+</footer>
+        <CookieConsent />
+      </div>
+    );
+  }

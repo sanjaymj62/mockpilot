@@ -51,22 +51,11 @@ export default function CookiePolicyPage() {
         </div>
 
         <div style={{ marginBottom: '2rem', background: '#111', padding: '1.5rem', borderRadius: '0.5rem', border: '1px solid #374151' }}>
-          <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '1rem', color: '#667eea' }}>
-            Analytics Cookies (Optional)
+          <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '1rem', color: '#9ca3af' }}>
+            Analytics Cookies (Not Used)
           </h3>
           <p style={{ color: '#d1d5db', marginBottom: '1rem' }}>
-            These cookies help us understand how visitors use our Service. You can opt out of these.
-          </p>
-          <ul style={{ color: '#d1d5db', marginLeft: '1.5rem', lineHeight: '1.8' }}>
-            <li><strong>Usage Analytics:</strong> Pages visited, time spent, features used</li>
-            <li><strong>Performance:</strong> Loading times, errors, browser types</li>
-            <li><strong>User Behavior:</strong> Click patterns, navigation flow</li>
-          </ul>
-          <p style={{ color: '#9ca3af', fontSize: '0.875rem', marginTop: '1rem' }}>
-            <strong>Duration:</strong> Up to 2 years
-          </p>
-          <p style={{ color: '#9ca3af', fontSize: '0.875rem' }}>
-            <strong>Third-Party:</strong> May include Google Analytics or similar services
+            <strong style={{ color: '#10b981' }}>We do not use analytics cookies.</strong> We respect your privacy and do not track your usage behavior.
           </p>
         </div>
 
@@ -90,21 +79,23 @@ export default function CookiePolicyPage() {
 
       <section style={{ marginBottom: '3rem' }}>
         <h2 style={{ fontSize: '1.75rem', fontWeight: 'bold', marginBottom: '1rem', color: '#667eea' }}>
-          3. Browser Fingerprinting
+          3. No Tracking Policy
         </h2>
-        <p style={{ color: '#d1d5db', marginBottom: '1rem' }}>
-          We collect browser fingerprints for session management and fraud prevention. This includes:
-        </p>
-        <ul style={{ color: '#d1d5db', marginLeft: '1.5rem', lineHeight: '1.8' }}>
-          <li>Browser type and version</li>
-          <li>Operating system</li>
-          <li>Screen resolution</li>
-          <li>Time zone</li>
-          <li>Installed fonts and plugins</li>
-        </ul>
-        <p style={{ color: '#9ca3af', fontSize: '0.875rem', marginTop: '1rem' }}>
-          This information is used to track free-tier usage limits (3 generations per session) and detect abuse.
-        </p>
+        <div style={{ background: '#1f1f1f', padding: '1.5rem', borderRadius: '0.5rem', border: '2px solid #10b981' }}>
+          <p style={{ color: '#d1d5db', marginBottom: '1rem', fontWeight: 'bold' }}>
+            ✅ MockPilot does NOT use tracking technologies.
+          </p>
+          <ul style={{ color: '#d1d5db', marginLeft: '1.5rem', lineHeight: '1.8' }}>
+            <li>No Google Analytics or similar tracking tools</li>
+            <li>No browser fingerprinting</li>
+            <li>No cross-site tracking</li>
+            <li>No advertising cookies</li>
+            <li>No user profiling</li>
+          </ul>
+          <p style={{ color: '#9ca3af', fontSize: '0.875rem', marginTop: '1rem' }}>
+            Free tier usage is tracked via session cookies only - no persistent tracking.
+          </p>
+        </div>
       </section>
 
       <section style={{ marginBottom: '3rem' }}>
@@ -292,16 +283,17 @@ export default function CookiePolicyPage() {
         </p>
       </section>
 
-      <div style={{ background: '#111', border: '1px solid #667eea', borderRadius: '0.75rem', padding: '2rem', marginTop: '3rem' }}>
-        <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1rem', color: '#667eea' }}>
-          🍪 Summary
+      <div style={{ background: '#111', border: '1px solid #10b981', borderRadius: '0.75rem', padding: '2rem', marginTop: '3rem' }}>
+        <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1rem', color: '#10b981' }}>
+          🍪 Privacy-First Cookie Policy
         </h3>
         <ul style={{ color: '#d1d5db', lineHeight: '2' }}>
-          <li>✅ We use essential cookies (required) and optional cookies (analytics, preferences)</li>
-          <li>✅ You can control non-essential cookies through browser settings</li>
-          <li>✅ We use browser fingerprinting for free tier usage tracking</li>
-          <li>✅ Third-party services may set their own cookies</li>
-          <li>✅ You can change your preferences at any time</li>
+          <li>✅ <strong>Essential cookies only</strong> - required for authentication and security</li>
+          <li>✅ <strong>No analytics tracking</strong> - we don't track your behavior</li>
+          <li>✅ <strong>No browser fingerprinting</strong> - we don't collect device fingerprints</li>
+          <li>✅ <strong>No advertising cookies</strong> - we don't serve ads</li>
+          <li>✅ <strong>Data minimization</strong> - we only collect what's necessary</li>
+          <li>✅ <strong>GDPR compliant</strong> - your privacy is protected</li>
         </ul>
       </div>
     </div>

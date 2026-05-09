@@ -200,8 +200,8 @@ app.post('/api/webhooks/dodo', async (req, res) => {
             console.log('Payment ID:', payment.payment_id);
             console.log('Total amount:', payment.total_amount);
             console.log('Currency:', payment.currency);
-            // Save purchase to database
-            const { error } = await supabase.from('purchases').insert({
+            // Save purchase to database (idempotent for webhook retries)
+            const { error } = await supabase.from('purchases').upsert({
                 user_id: userId,
                 order_id: payment.payment_id,
                 product_id: productId,
@@ -211,9 +211,16 @@ app.post('/api/webhooks/dodo', async (req, res) => {
                 amount: payment.total_amount,
                 currency: payment.currency,
                 plan_type: planType,
+            }, {
+                onConflict: 'order_id',
             });
             if (error) {
-                console.error('Database error:', error);
+                console.error('Database error while saving purchase:', {
+                    message: error.message,
+                    code: error.code,
+                    details: error.details,
+                    hint: error.hint,
+                });
                 return res.status(500).json({ error: 'Database error' });
             }
             console.log('✅ Purchase recorded successfully for user:', userId);
