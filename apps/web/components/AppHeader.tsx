@@ -160,8 +160,8 @@ export function AppHeader(props: AppHeaderProps) {
             <Link href={logoHref} style={{ textDecoration: 'none', color: 'inherit' }}>
               <h1 style={styles.logo}>MockPilot</h1>
             </Link>
-            <nav style={{ ...styles.stackedNav, marginTop: 0, gap: '1.5rem' }}>
-              <div style={{ display: 'flex', gap: '1.5rem' }}>
+            <nav style={{ ...styles.stackedNav, marginTop: 0, gap: '1.5rem', alignItems: 'flex-start', paddingTop: '0.25rem' }}>
+              <div style={{ display: 'flex', gap: '1.5rem', marginTop: '0.25rem' }}>
                 <Link href="#features" style={styles.landingLink} {...hoverLandingLink}>
                   Features
                 </Link>
