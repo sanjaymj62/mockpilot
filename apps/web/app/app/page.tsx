@@ -200,22 +200,22 @@ export default function Home() {
         }
       />
 
-      <main className="flex-1 flex overflow-hidden">
-        <div className="flex-1 flex flex-col border-r border-gray-700">
-          <div className="bg-gray-800 border-b border-gray-700 px-4 py-3 flex items-center justify-between">
-            <h2 className="font-semibold">OpenAPI/Swagger YAML</h2>
-            <div className="flex gap-2">
+      <main className="flex-1 flex flex-col lg:flex-row overflow-hidden">
+        <div className="flex-1 flex flex-col border-r border-gray-700 min-h-[300px]">
+          <div className="bg-gray-800 border-b border-gray-700 px-3 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <h2 className="font-semibold text-sm sm:text-base">OpenAPI/Swagger YAML</h2>
+            <div className="flex gap-2 flex-wrap">
               <button
                 onClick={loadExample}
-                className="px-3 py-1.5 text-sm bg-gray-700 text-gray-200 rounded hover:bg-gray-600 transition-colors"
+                className="px-2 py-1.5 text-xs sm:text-sm bg-gray-700 text-gray-200 rounded hover:bg-gray-600 transition-colors"
               >
                 Load Example
               </button>
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="px-3 py-1.5 text-sm bg-gray-700 text-gray-200 rounded hover:bg-gray-600 transition-colors"
+                className="px-2 py-1.5 text-xs sm:text-sm bg-gray-700 text-gray-200 rounded hover:bg-gray-600 transition-colors"
               >
-                Upload File
+                Upload
               </button>
               <input
                 ref={fileInputRef}
@@ -230,27 +230,27 @@ export default function Home() {
             value={yamlInput}
             onChange={(e) => setYamlInput(e.target.value)}
             placeholder="Paste your OpenAPI/Swagger YAML here or upload a file..."
-            className="flex-1 p-4 bg-gray-900 text-gray-100 border-none outline-none resize-none font-mono text-sm"
+            className="flex-1 p-3 sm:p-4 bg-gray-900 text-gray-100 border-none outline-none resize-none font-mono text-xs sm:text-sm"
             spellCheck={false}
           />
         </div>
 
-        <div className="flex-1 flex flex-col">
-          <div className="bg-gray-800 border-b border-gray-700 px-4 py-3 flex items-center justify-between">
-            <h2 className="font-semibold">Generated HTTP Requests</h2>
+        <div className="flex-1 flex flex-col min-h-[300px]">
+          <div className="bg-gray-800 border-b border-gray-700 px-3 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <h2 className="font-semibold text-sm sm:text-base">Generated HTTP</h2>
             {httpOutput && (
               <div className="flex gap-2">
                 <button
                   onClick={copyToClipboard}
-                  className="px-3 py-1.5 text-sm bg-gray-700 text-gray-200 rounded hover:bg-gray-600 transition-colors"
+                  className="px-2 py-1.5 text-xs sm:text-sm bg-gray-700 text-gray-200 rounded hover:bg-gray-600 transition-colors"
                 >
                   Copy
                 </button>
                 <button
                   onClick={downloadHttpFile}
-                  className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+                  className="px-2 py-1.5 text-xs sm:text-sm bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
                 >
-                  Download .http
+                  Download
                 </button>
               </div>
             )}
@@ -260,13 +260,13 @@ export default function Home() {
               <SyntaxHighlighter
                 language="http"
                 style={atomOneDark}
-                customStyle={{ margin: 0, padding: '1rem', background: 'transparent', fontSize: '0.875rem' }}
+                customStyle={{ margin: 0, padding: '1rem', background: 'transparent', fontSize: '0.75rem sm:0.875rem' }}
                 wrapLongLines={true}
               >
                 {httpOutput}
               </SyntaxHighlighter>
             ) : (
-              <div className="p-4 text-gray-500 font-mono text-sm">
+              <div className="p-3 sm:p-4 text-gray-500 font-mono text-xs sm:text-sm">
                 Generated HTTP requests will appear here...
               </div>
             )}
@@ -274,12 +274,12 @@ export default function Home() {
         </div>
       </main>
 
-      <footer className="bg-gray-800 border-t border-gray-700 px-6 py-4">
+      <footer className="bg-gray-800 border-t border-gray-700 px-4 sm:px-6 py-3 sm:py-4">
         <div className="flex flex-col items-center gap-3">
           <button
             onClick={generateHttpRequests}
             disabled={isDisabled}
-            className={`px-8 py-3 rounded-lg font-semibold text-lg transition-colors ${
+            className={`px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-lg transition-colors ${
               isDisabled 
                 ? 'bg-gray-600 cursor-not-allowed text-gray-300' 
                 : 'bg-blue-600 hover:bg-blue-700 text-white'
