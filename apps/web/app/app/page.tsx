@@ -189,11 +189,11 @@ export default function Home() {
         logoHref="/app"
         showNavigation={currentUser !== null}
         rightContent={
-          <div className={`px-3 py-1.5 rounded-lg border text-xs ${usageRemaining > 0 ? 'bg-gray-800 border-gray-700' : 'bg-red-900 border-red-700'}`}>
-            <div className="text-gray-400">
+          <div className={`px-2 py-1 rounded border text-xs leading-tight ${usageRemaining > 0 ? 'bg-gray-800 border-gray-700' : 'bg-red-900 border-red-700'}`}>
+            <div className="text-gray-400 text-[10px]">
               {currentUser ? 'Unlimited' : 'Free'}
             </div>
-            <div className="font-bold text-sm">
+            <div className="font-bold text-xs">
               {currentUser ? '∞' : `${usageRemaining}/3`}
             </div>
           </div>
